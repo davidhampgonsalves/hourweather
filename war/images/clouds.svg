@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   inkscape:export-filename="/home/david/projects/hourlyweather redesign/cloud.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   sodipodi:docname="New document 1">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4842805"
+     inkscape:cx="-176.74243"
+     inkscape:cy="522.8246"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#eaf1ff;fill-opacity:1;stroke:none"
+       d="m -270.43229,462.54226 1075.3587,0 c -2.5703,-20.34177 -25.7407,-26.88834 -33.5257,-18.35556 -6.38571,-9.1343 -19.02678,-13.19398 -24.3699,-2.02984 2.99736,-15.22384 -14.85653,-17.25368 -23.32735,-8.11937 -20.98158,-9.13431 -49.26108,1.01492 -55.64678,22.32829 -4.30057,-17.25369 -21.1119,-18.2686 -30.62528,-6.08954 -1.17288,-12.17906 -15.89909,-12.17906 -23.32735,2.02985 -5.34312,-8.11939 -21.19774,-6.9846 -18.11452,10.14922 -10.47009,-27.52278 -54.04675,-36.90999 -74.02195,-19.28353 -30.40081,-39.20919 -72.97938,-12.17906 -72.97938,-12.17906 0,0 -3.31491,-31.94472 -34.40457,-18.26861 7.48516,-22.8611 -6.41856,-40.26642 -30.23432,-29.43275 -12.34758,-36.86767 -83.68385,-39.86611 -90.70294,2.02984 -26.8278,4.34382 -22.94787,26.1878 -18.76614,34.50737 -19.7972,-14.00872 -44.71079,0.37363 -41.70251,17.25369 -11.58761,-8.49302 -24.25243,3.98504 -11.46819,16.23875 -22.66289,-13.11936 -22.81908,1.2599 -22.81908,1.2599 0,0 -9.19191,-24.41187 -36.60698,-7.34944 -36.79815,-42.81798 -65.681462,-11.16415 -65.681462,-11.16415 0,0 -13.864191,-20.35321 -27.106621,2.02985 C 67.721145,406.68933 39.535412,405.45035 29.87801,418.81364 12.922663,409.84862 8.6746761,430.44188 7.9841868,432.00763 c -0.690503,1.56575 -8.81581418,-7.56775 -13.905322,5.95124 -4.0469549,-17.94358 -20.6965238,-23.38388 -38.4355318,-12.40191 -11.483619,-19.46569 -57.418693,-20.47925 -73.121283,-5.21124 -10.48979,-11.11995 -28.27937,-5.95832 -31.42991,8.23975 -6.27823,-7.11529 -15.64101,-9.25383 -22.83047,6.63767 -1.97666,-29.77999 -53.90816,-34.42549 -58.79116,-18.13684 -37.48285,-3.83536 -39.96605,16.34852 -39.9028,45.45596 z"
+       id="path3808"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
+       inkscape:export-filename="/home/david/projects/hourlyweather redesign/cloud.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
