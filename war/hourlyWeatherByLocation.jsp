@@ -235,7 +235,7 @@
 			display: block;
 			position:absolute;
 			right:20px;
-			top:-100px;
+			top:-150px;
 			z-index: 3;
 		}
 
@@ -309,7 +309,7 @@
 		<div id='permissions_area'>
 			<div id='arrow'> </div>
 			<div id='permissions_msg'>
-				Tell us where you are we'll create a location aware hourly forecast for you.
+				Allow your browser to share your rough location with us and we'll create an awesome hourly forecast just for you.
 			</div>
 		</div>
 		<div id=diorama>	
@@ -406,8 +406,6 @@
 		} else {
 			alert('Your browser is just to darn old, and doesn\'t support GeoLocation.  Sorry.');
 		}
-		
-		
 		
 		function getForecast(position) {
 		
@@ -514,7 +512,7 @@
 			if((visible == undefined || !visible) && !window.locationReturned)
 				permissionsDialog.animate({'top':'0'}); 
 			else
-				permissionsDialog.animate({'top':'-100px'}); 
+				permissionsDialog.animate({'top':'-150px'}); 
 		}
 	</script>
 	</body>
