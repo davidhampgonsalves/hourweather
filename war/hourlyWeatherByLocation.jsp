@@ -1,19 +1,16 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
-
+<%@page contentType="text/html" %>
+<!doctype html>
+<html>
 <head>
 	<meta name='keywords' content='weather forecast android location hour hourly'></meta>
 	<meta name='description' content='super accurate location aware hourly weather forecast and android app'> </meta>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
   	<meta name="apple-mobile-web-app-capable" content="yes" /> 
-	<title> Hour Weather, dead easy location aware hourly forecast</title>	
-	<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAtBXrBPeu06XUpudOXcQOuxRX2HH5zuNNjZghGMsxwI9-Ikp8AhSUmG3y0tErgw-y4DIX6YIBfiIDCw"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
-	<script type="text/javascript">
+	<title> Hour Weather is location based, dead easy, forecasting </title>	
+	<script type="application/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAtBXrBPeu06XUpudOXcQOuxRX2HH5zuNNjZghGMsxwI9-Ikp8AhSUmG3y0tErgw-y4DIX6YIBfiIDCw"></script>
+	<script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+	<script type="application/javascript">
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-19849283-3']);
 	  _gaq.push(['_trackPageview']);
@@ -87,6 +84,7 @@
 			position: absolute;
 			left:620px;
 			top:160px;
+			z-index:3;
 		}
 		
 		#body {
@@ -418,7 +416,6 @@
 			//set loading indicator
 			$('#forecast').html('<div class=loading><div class=obj></div><div class=loading-text>loading...!</div></div>');
 			$.getJSON("HourlyWeatherByLocation", {lat: position.coords.latitude, long: position.coords.longitude, timezoneOffset: - new Date().getTimezoneOffset()/60}, displayForecast).error(showError);
-			//displayForecast({"forecastHours":[{"wind":"30.7 km/h","symbolCode":1,"precip":"none","temp":"20℃ | 24℉","sunUp":false,"hour":"06:00 PM","date":"Thursday, November 24"},{"wind":"13.7 km/h","symbolCode":2,"precip":"none","temp":"-4℃ | 24℉","sunUp":false,"hour":"07:00 PM"},{"wind":"13.7 km/h","symbolCode":2,"precip":"none","temp":"-4℃ | 24℉","sunUp":false,"hour":"08:00 PM"},{"wind":"13.7 km/h","symbolCode":2,"precip":"none","temp":"-4℃ | 24℉","sunUp":false,"hour":"09:00 PM"},{"wind":"12.6 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"10:00 PM"},{"wind":"12.6 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"11:00 PM"},{"wind":"12.6 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"12:00 AM","date":"Friday, November 25"},{"wind":"13.3 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"01:00 AM"},{"wind":"13.3 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"02:00 AM"},{"wind":"13.3 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"03:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"-3℃ | 25℉","sunUp":false,"hour":"04:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"-3℃ | 25℉","sunUp":false,"hour":"05:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"-3℃ | 25℉","sunUp":false,"hour":"06:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"0℃ | 30℉","sunUp":true,"hour":"07:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"0℃ | 30℉","sunUp":true,"hour":"08:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"0℃ | 30℉","sunUp":true,"hour":"09:00 AM"},{"wind":"12.6 km/h","symbolCode":4,"precip":"none","temp":"4℃ | 40℉","sunUp":true,"hour":"10:00 AM"},{"wind":"12.6 km/h","symbolCode":4,"precip":"none","temp":"4℃ | 40℉","sunUp":true,"hour":"11:00 AM"},{"wind":"12.6 km/h","symbolCode":4,"precip":"none","temp":"4℃ | 40℉","sunUp":true,"hour":"12:00 PM"},{"wind":"13.3 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 42℉","sunUp":true,"hour":"01:00 PM"},{"wind":"13.3 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 42℉","sunUp":true,"hour":"02:00 PM"},{"wind":"13.3 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 42℉","sunUp":true,"hour":"03:00 PM"},{"wind":"17.6 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 41℉","sunUp":true,"hour":"04:00 PM"},{"wind":"17.6 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 41℉","sunUp":false,"hour":"05:00 PM"},{"wind":"17.6 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 41℉","sunUp":false,"hour":"06:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"07:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"08:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"09:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"10:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"11:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"12:00 AM","date":"Saturday, November 26"},{"wind":"15.8 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"01:00 AM"},{"wind":"15.8 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"02:00 AM"},{"wind":"15.8 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"03:00 AM"},{"wind":"10.1 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"04:00 AM"},{"wind":"10.1 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"05:00 AM"}]});
 		}
 		
 		function displayForecast(json) {
@@ -454,7 +451,7 @@
 		}
 		
 		function isHot(hour) {
-			if(hour.temp[0] > 1 && hour.temp[1] != '℃')
+			if(hour.temp[0] > 1 && hour.temp[1] >= 0 && hour.temp[1] <= 9)
 				return true;
 			return false;
 		}
