@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.hourlyweather.web.CityLocationUtil" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
@@ -11,8 +10,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
   	<meta name="apple-mobile-web-app-capable" content="yes" /> 
-	<link rel="stylesheet" type="text/css" media="screen" href="/hourlyweather.css" />
-	<title> Hour Weather, your location aware hourly forecast </title>
+	<title> Hour Weather, your location aware hourly forecast </title>	
+	<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAtBXrBPeu06XUpudOXcQOuxRX2HH5zuNNjZghGMsxwI9-Ikp8AhSUmG3y0tErgw-y4DIX6YIBfiIDCw"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 	<script type="text/javascript">
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-19849283-3']);
@@ -25,142 +25,500 @@
 	  })();
 	
 	</script>
+	<style>
+		* {margin:0;padding:0;}
+		
+		body {
+			background: #eaf1ff;
+			font:15px helvetica,arial,freesans;
+			color:#333;
+		}
+		
+		h2 {
+			font-size:15px;
+			display:inline;
+		}
+		
+		.obj, .rope, #title a {
+			background: transparent url(/images/all.png) 0 0 no-repeat
+		}
+		
+		#head {
+			background:white;
+			width:100%;
+			height:300px;
+			position:relative;
+		}
+		
+		#clouds {
+			height: 120px;
+			width: 100%;
+			background: transparent url('/images/cloud.png') center bottom repeat-x;
+			z-index: 2;
+			bottom:0;
+			position:absolute;
+		}
+		
+		#diorama {
+			width:1000px;
+			margin:0 auto;
+			z-index: 1;
+			position:relative;
+		}
+		
+		#title {
+			padding-top: 50px;
+			
+		}
+		
+		#title a {
+			position: absolute;
+			left:300px;
+			display:block;
+			width: 430px;
+			height:150px;
+			z-index:2;
+			background-position:-267px -5px
+		}
+		
+		#title a:hover {margin-top:4px;}
+		
+		#g-plusone-container {
+			position: absolute;
+			left:620px;
+			top:160px;
+		}
+		
+		#body {
+			position:relative;
+			background: #eaf1ff;
+			padding-top:90px;
+			z-index:2;
+			margin:0 auto;
+		}
+		
+		.content {
+			margin: 0 auto;
+			width:1000px;
+		}
+		
+		#forecast {
+			min-height: 500px;
+			margin-top:-20px;
+		}
+		
+		.hour {
+			background:rgb(250,250,250);
+			overflow:auto;
+			padding:5px 0;
+			border-bottom: 2px solid rgb(230,230,230);
+		}
+		
+		.day-start {
+			background:#d8f6ea;
+			line-height: 50px;
+			height: 50px;
+			padding-left:20px;
+			font-size: 18px;
+		}
+		
+		.hour.alt {background: #dcefff}
+		
+		.hour.night {background:#d8dfe4; border-bottom: 2px solid rgb(200,200,220);}
+		.hour.night.alt {background:rgb(235, 240, 245)}
+		
+		.hour div {
+			font-size:20px;
+			float:left;
+			height:70px;
+			line-height: 70px;
+			text-align:center;
+			margin-right: 10px;
+		}
+		
+		div.time {width:180px;font-size:22px;}
+		div.symbol {
+			width:70px;
+			margin-top:0;
+		}
+		div.wind {width:250px;}
+		div.temp {width:250px;}
+		div.precip {width:210px;margin-right:0}
+		
+		.cold {color: #2eb1ff;}
+		.hot {color: #ff4038;}
+		.windy {color: #ff6f09;}
+		
+		label {
+			font-size:15px;
+			color: black;
+		}
+		
+		#about {
+			font-size: 15px;
+			margin:70px auto;
+		}
+		
+		#about div {
+			font-size: 10px;
+			margin-top: 40px;
+			text-align: center;
+		}
+		
+		#marketing-blurb {
+			font-size: 18px;
+			border-radius: 8px;
+			padding: 30px;
+			width:630px;
+			margin: 0 auto;
+			margin-top:50px;
+		}
+		
+		.important {
+			text-align: center;
+			font-size: 25px;
+			font-weight:bold;
+		}
+		
+		/* weather diorama */
+		.hanging-obj {
+			position:absolute;
+			height:300px;
+			width:160px;
+			background: transparent;
+			top:-320px;
+		}
+		
+		.rope {
+			width:10px;
+			height:250px;
+			background-position: -1077px 0;
+			margin:0 auto;
+			z-index:2;
+			position:relative;
+		}
+		
+		.obj {
+			width:100%;
+			margin:0 auto;
+			margin-top:-10px;
+			height:70px;
+			width: 70px;
+		}
+		
+		.hanging-obj.sm .obj {
+			height:50px;
+			width: 50px;
+			margin-top:-20px;
+		}
+		
+		.hanging-obj.lg .obj {
+			height:160px;
+			width:160px;
+			margin-top:-20px;
+		}
+		
+		.hanging-obj.day .obj {background-position: -695px 0}
+		.hanging-obj.night .obj {background-position: -866px 0}
+
+		#day-night-sm.day .obj {background-position: -1026px -30px;}		
+		#day-night-sm.night .obj {background-position: -1026px -74px;}
+
+		
+		#day-night {left:680px; top:-190px;}
+		#day-night-sm {left:180px; top:-160px;}
+		
+		#weather-1 {left:0;}
+		#weather-2 {left:900px;}
+		
+		#permissions_area {
+			width:300px;
+			margin:0 auto;
+			display: block;
+			position:absolute;
+			right:20px;
+			top:-100px;
+			z-index: 3;
+		}
+
+		#arrow {
+			border: 20px solid transparent;
+			border-bottom: 20px solid #afcdf3;
+			width: 0;
+			margin-top: -20px;
+			margin-left: 230px;
+		}
+
+		#permissions_msg {	
+			border: 10px solid #afcdf3;
+			background:white;
+			padding: 10px;
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			border-radius: 10px;
+		}
+		
+		.loading {
+			margin:0 auto;
+			width:175px;
+		}
+		
+		.loading .obj {
+			-webkit-animation-name: spinnerRotate;
+			-webkit-animation-duration: 5s;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-timing-function: linear;
+
+			-moz-animation-name: rotate; 
+			-moz-animation-duration: 5s; 
+			-moz-animation-iteration-count: infinite;
+			-moz-animation-timing-function: linear;
+			
+			background-position: -695px 0;
+			height:160px;
+			width:160px;
+    		margin:0 auto;
+		}
+		
+		.loading-text {
+			position:relative;
+			background: #eaf1ff;
+			width:100%;
+			height: 95px;
+			margin-top: -90px;
+			z-index:5;
+			font-size: 25px;
+			font-weight:900;
+			color: rgb(100,100,100);
+			line-height: 60px;
+			border-top: 2px solid rgb(200,200,200);
+			text-align:center; 
+		}
+
+		@-webkit-keyframes spinnerRotate {
+			from {-webkit-transform:rotate(0deg);}
+			to {-webkit-transform:rotate(360deg);}
+		}
+
+		@-moz-keyframes rotate {
+		    from {-moz-transform: rotate(0deg);}
+		    to {-moz-transform: rotate(360deg);}
+		}
+	</style>
 </head>
 	<body>
+<div id=head>
 		<div id='permissions_area'>
 			<div id='arrow'> </div>
 			<div id='permissions_msg'>
 				Tell us where you are we'll create a location aware hourly forecast for you.
 			</div>
 		</div>
-		
-		<div id='error_area'> 
-			<h3 > Error </h3>
-			<div class='msg'> </div>
-			<div class='smaller'> If you want to see how this would have worked try one of the city links at the bottom. </div>
-		</div>
-	
-		<h1><a href="/"><span>H</span>our Weather</a></h1>
-		<div id='slogan'>where you are for when you're there</div>
-		
-		<div id='forecast'>
-			<div id='welcome' style='display:none'>
-				We use your browsers built in location awareness and the awesome <a href='http://www.yr.no/'>yr.no</a> weather service to create a super accurate hourly weather forecast for your current location.
-				<br/>
-				Or take your location aware weather forecast with you using our even more accurate <a href=''>Android App</a>.
+		<div id=diorama>	
+			<div id=day-night class='lg hanging-obj day'>
+				<div class=rope></div>
+				<div class=obj> </div>
+			</div>
+
+			<div id=day-night-sm class='sm hanging-obj day'>
+				<div class=rope></div>
+				<div class='obj'></div>
 			</div>
 			
-			<img id='loading' style='display:none' src='images/loading.gif'> </img>
-		</div>
-		
-		<a id='android_button' href='http://market.android.com/details?id=com.hourlyweather'>
-			<div> Check out Hourly Weather on your Andoid phone! </div>
-			<img src='/images/android.png'></img>
-		</a>
-		
-		<div id='places'>		
-			<%	boolean alt = false;
-				for(String city : CityLocationUtil.getLocations()) { %>
-					<a href='/city/<%= city %>' <%= alt ? "class='alt'" : "" %>><%= city %></a>
-			<% alt = !alt; } %>	
-		</div>
-    	<div id="footer">
-	      <span><a href="http://davidhampgonsalves.com/">by: David Hamp-Gonsavles</a></span>
-	      <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fhourweather.com&amp;layout=button_count&amp;show_faces=false&amp;width=55&amp;action=like&amp;font&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:55px; height:20px;" allowTransparency="true"></iframe>
-	      <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://hourweather.com" data-text="hour weather" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-		</div>
-	<script src="http://code.google.com/apis/gears/gears_init.js" type="text/javascript" charset="utf-8"></script> 
-	<script src="/javascript/geo.js" type="text/javascript" charset="utf-8"></script> 
-	<script>
-		window.onload = init;
-		var locationReturned = false;
-		
-		function init() {
+			<div id=weather-1 class='hanging-obj'>
+				<div class=rope></div>
+				<div class='obj bird'></div>
+			</div>
 			
-			if (geo_position_js.init())
-				geo_position_js.getCurrentPosition(getForecastForLocation, showLocationError);
-			else
-				showError('Your browser doesn\'t support the HTML5 Location api. Upgrade to a current version of Firefox or Chrome.');
+			<div id=weather-2 class='hanging-obj'>
+				<div class=rope></div>
+				<div class='obj'></div>
+			</div>
+			<div id=title>
+				<a href='/'></a>
+				<div id=g-plusone-container><g:plusone></g:plusone></div>
+			</div>
+		</div>
+		<div id=clouds> </div>
+	</div>
+	<div id=body>
+		<div id=forecast class=content>
+			<div id=marketing-blurb>
+				<div class=important>	
+				Hassle free forecasting based on your location!
+				</div>    
+				Wherever you are Hour Weather takes the hassle out of checking the forecast by figuring out the nearest weather station automatically. Stop bookmarking local weather forecasts and let Hour Weather simplify your day.
+			</div>
+		</div>
 		
-			//prompt user for location access after a second
-			window.setTimeout(displayPermissionPrompt, 100);
-		}
-		
-		function getForecastForLocation(pos) {
-			//mark the location as returned
-			locationReturned = true;
-			hidePermissionPrompt();
+					
+		<div id=about class=content>
+			<h3>about</h3>Hour Weather uses the geo capatabilities of HTML5 to determine your rough location and then based on that is able to create a forecast just for you using the awesome <a href='http://www.yr.no/'>yr.no</a> weather service.
+			<br><br>
+			In the office, from your home or on vacation, Hour Weather will always give you a super accurate hourly weather forecast. 
+			
+			<div>a weekend project by <a href='http://www.davidhampgonsalves.com'>david hamp-gonsalves</a>.</div>
+		</about>
+	</div>
+	<script type='text/javascript'>
+		  (function() {
+		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		    po.src = 'https://apis.google.com/js/plusone.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		  })();
 
-			document.getElementById('loading').style.display = 'block';
-			
-			var lat = pos.coords.latitude;
-			var lon = pos.coords.longitude;
-			var timezoneOffset = - new Date().getTimezoneOffset()/60;
-			
-			//make request to get forecast for this location
-			var xmlHttpRequest = createXMLHttpRequest();
-			xmlHttpRequest.open('GET', 'HourlyWeatherByLocation?lat=' + lat + '&long=' + lon + '&timezoneOffset=' + timezoneOffset, true);
-			xmlHttpRequest.onreadystatechange = function() {
-				if (xmlHttpRequest.readyState == 4)
-					document.getElementById('forecast').innerHTML = xmlHttpRequest.responseText;
-			};
-			xmlHttpRequest.send(null);
-		}
 		
-		function displayPermissionPrompt() {
-			if(!locationReturned) {
-				document.getElementById('permissions_area').style.display = 'block';
-				document.getElementById('welcome').style.display = 'block';
-			}
-		}
-		
-		 function createXMLHttpRequest() {
-			try { return new XMLHttpRequest(); } catch(e) {}
-			try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
-			try { return new ActiveXObject("Microsoft.XMLHTTP");} catch (error) {}
-			alert("XMLHttpRequest not supported");
-			return null;
-		}
-		
-		function hidePermissionPrompt() {
-			document.getElementById('permissions_area').style.display = 'none';
-			document.getElementById('welcome').style.display = 'none';
-			
-		}
-		
-		function showLocationError(err, msg) {
-			//mark the location as returned
-			locationReturned = true;
-			
-			var errorMsg;
-			if(err.code == 1)
-				//user rejected access
-				errorMsg = 'We can\'t generate a location aware forecast unless you share your location with us.\n'
-			else if(err.code == 2)
-				//users position is unavailiable
-				errorMsg = 'Your browser currently doesn\'t know where you are.';
-			else if(err.code == 3)
-				//timeout
-				errorMsg = 'It took too long for your browser to determine its location.';
-			else
-				errorMsg = err.msg;
-				
-			//hide the prompt and display the error
-			hidePermissionPrompt();
-			showError(errorMsg);
-		}
-		
-		function showError(msg) {
-			var errorBox = document.getElementById('error_area');	
-			var children = errorBox.getElementsByTagName('div');	
-			for(var i in children) 
-				if(children[i].getAttribute('class') == 'msg') {
-					children[i].innerHTML = msg;
-					errorBox.style.display = 'block';
-					break;
+		 /* This is a small part of jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
+		 That is used under a BSD Liscense and was created by: George McGinley Smith */
+		jQuery.easing['jswing'] = jQuery.easing['swing'];
+
+		jQuery.extend( jQuery.easing,
+		{
+			def: 'easeOutQuad',
+			swing: function (x, t, b, c, d) {
+				return jQuery.easing[jQuery.easing.def](x, t, b, c, d);
+			},
+			easeOutQuad: function (x, t, b, c, d) {
+				return -c *(t/=d)*(t-2) + b;
+			},
+			easeOutBounce: function (x, t, b, c, d) {
+				if ((t/=d) < (1/2.75)) {
+					return c*(7.5625*t*t) + b;
+				} else if (t < (2/2.75)) {
+					return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+				} else if (t < (2.5/2.75)) {
+					return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+				} else {
+					return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
 				}
+			}
+		});
+
+		window.locationReturned = false;
+		jQuery.easing.def = "easeOutBounce";
+		
+		if (navigator.geolocation) {
+ 			window.setTimeout(setPermissionVisibility, 1100);
+ 			
+ 			//request location
+ 			navigator.geolocation.getCurrentPosition(getForecast, showLocationError, {timeout: 5000});
+ 			
+ 			//drop the sun down
+ 			
+		} else {
+			alert('Your browser is just to darn old, and doesn\'t support GeoLocation.  Sorry.');
 		}
 		
+		
+		
+		function getForecast(position) {
+		
+			window.locationReturned = true;
+			setPermissionVisibility(false);
+			//set loading indicator
+			$('#forecast').html('<div class=loading><div class=obj></div><div class=loading-text>loading...!</div></div>');
+			$.getJSON("HourlyWeatherByLocation", {lat: position.coords.latitude, long: position.coords.longitude, timezoneOffset: - new Date().getTimezoneOffset()/60}, displayForecast).error(showError);
+			//displayForecast({"forecastHours":[{"wind":"30.7 km/h","symbolCode":1,"precip":"none","temp":"20℃ | 24℉","sunUp":false,"hour":"06:00 PM","date":"Thursday, November 24"},{"wind":"13.7 km/h","symbolCode":2,"precip":"none","temp":"-4℃ | 24℉","sunUp":false,"hour":"07:00 PM"},{"wind":"13.7 km/h","symbolCode":2,"precip":"none","temp":"-4℃ | 24℉","sunUp":false,"hour":"08:00 PM"},{"wind":"13.7 km/h","symbolCode":2,"precip":"none","temp":"-4℃ | 24℉","sunUp":false,"hour":"09:00 PM"},{"wind":"12.6 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"10:00 PM"},{"wind":"12.6 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"11:00 PM"},{"wind":"12.6 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"12:00 AM","date":"Friday, November 25"},{"wind":"13.3 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"01:00 AM"},{"wind":"13.3 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"02:00 AM"},{"wind":"13.3 km/h","symbolCode":3,"precip":"none","temp":"-6℃ | 21℉","sunUp":false,"hour":"03:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"-3℃ | 25℉","sunUp":false,"hour":"04:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"-3℃ | 25℉","sunUp":false,"hour":"05:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"-3℃ | 25℉","sunUp":false,"hour":"06:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"0℃ | 30℉","sunUp":true,"hour":"07:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"0℃ | 30℉","sunUp":true,"hour":"08:00 AM"},{"wind":"14 km/h","symbolCode":4,"precip":"none","temp":"0℃ | 30℉","sunUp":true,"hour":"09:00 AM"},{"wind":"12.6 km/h","symbolCode":4,"precip":"none","temp":"4℃ | 40℉","sunUp":true,"hour":"10:00 AM"},{"wind":"12.6 km/h","symbolCode":4,"precip":"none","temp":"4℃ | 40℉","sunUp":true,"hour":"11:00 AM"},{"wind":"12.6 km/h","symbolCode":4,"precip":"none","temp":"4℃ | 40℉","sunUp":true,"hour":"12:00 PM"},{"wind":"13.3 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 42℉","sunUp":true,"hour":"01:00 PM"},{"wind":"13.3 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 42℉","sunUp":true,"hour":"02:00 PM"},{"wind":"13.3 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 42℉","sunUp":true,"hour":"03:00 PM"},{"wind":"17.6 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 41℉","sunUp":true,"hour":"04:00 PM"},{"wind":"17.6 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 41℉","sunUp":false,"hour":"05:00 PM"},{"wind":"17.6 km/h","symbolCode":4,"precip":"none","temp":"5℃ | 41℉","sunUp":false,"hour":"06:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"07:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"08:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"09:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"10:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"11:00 PM"},{"wind":"15.5 km/h","symbolCode":3,"precip":"none","temp":"6℃ | 43℉","sunUp":false,"hour":"12:00 AM","date":"Saturday, November 26"},{"wind":"15.8 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"01:00 AM"},{"wind":"15.8 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"02:00 AM"},{"wind":"15.8 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"03:00 AM"},{"wind":"10.1 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"04:00 AM"},{"wind":"10.1 km/h","symbolCode":3,"precip":"none","temp":"4℃ | 39℉","sunUp":false,"hour":"05:00 AM"}]});
+		}
+		
+		function displayForecast(json) {
+			//make sure the dom is ready
+			$().ready(function() {
+				if(json.error != undefined) {
+					alert(json.error);
+				}
+				
+				var forecastHours = json.forecastHours;
+				
+				//set the day/night status + set the position
+				animateDiorama(forecastHours[0]);
+				
+				var forecastLength = forecastHours.length;
+				var forecastArea = $('#forecast');
+				forecastArea.empty();
+				for(var i=0; i < forecastLength ; i += 1) {
+					var hour = forecastHours[i];
+					if(hour.date != undefined)
+						forecastArea.append('<div class=day-start>' + hour.date + '</div>');
+					//add the forecast data to the forecast area
+					forecastArea.append('<div class=\'hour ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + (-71.5 * hour.symbolCode - 1) + (hour.sunUp ? 'px -160px':'px -230px') + '\'></div> <div class=\'temp ' + (isCold(hour) ? 'cold':'') + (isHot(hour) ? 'hot':'') + '\'><label>temperature: </label>' + hour.temp + '</div> <div class=\'wind ' + (isWindy(hour)? 'windy':'') + '\'><label>wind speed: </label>' + hour.wind + '</div> <div class=precip><label>precipitation: </label>' + hour.precip + '</div> </div>');
+				}
+				
+			});
+		}
+		
+		function isCold(hour) {
+			if(hour.temp[0] === '-')
+				return true;
+			return false;
+		}
+		
+		function isHot(hour) {
+			if(hour.temp[0] > 1 && hour.temp[1] != '℃')
+				return true;
+			return false;
+		}
+		
+		function isWindy(hour) {
+			if(hour.wind[0] > 2 && hour.wind[1] >= 0 && hour.wind[1] <= 9)
+				return true;
+			return false;
+		}
+		
+		function animateDiorama(firstForecastHour) {
+			//if night then we need to remove the sun first
+			if(!firstForecastHour.sunUp) {
+				//pull up the sun
+				$('#day-night').animate({'top':'-400px'}, {duration:1100, easing:'easeOutQuad'});
+				$('#day-night-sm').animate({'top':'-400px'}, {duration:1100, easing:'easeOutQuad', complete:function() {performDropAnimation(firstForecastHour)}});
+			} else
+				performDropAnimation(firstForecastHour);		
+		}
+		
+		function performDropAnimation(forecastHour) {
+			//set the day/night states
+			if(!forecastHour.sunUp) {
+				$('.day').removeClass('day').addClass('night');
+			}
+			//position the sun/moon based on the forecast
+			
+			$('#day-night').animate({'top': -193 + (forecastHour.symbolCode > 5? (16 * forecastHour.symbolCode - 1):0) + 'px'}, 2500);
+			$('#day-night-sm').animate({'top':-160 + (9 * forecastHour.symbolCode - 1) + 'px'}, 3000);
+			
+			//change the state of the weather icons
+			//avoid using icons with sun/moons
+			var symbolCode = forecastHour.symbolCode - 1;
+			if(symbolCode < 2) symbolCode = 2;
+			if(symbolCode == 3) symbolCode = 7
+			if(symbolCode > 4 && symbolCode < 8) symbolCode += 5;
+
+			$('#weather-1 .obj, #weather-2 .obj').css('background-position', -71.5 * symbolCode + 'px -160px');
+			//drop the weather icons
+			$('#weather-1').animate({'top':'-100px'}, 2800);
+			$('#weather-2').animate({'top':'-60px'}, 2500);
+		}
+		
+		
+		function showError(error) {
+			alert('Sorry, but it looks like we\'ve hit some troubles generating your forecast!  Why don\'t you try again.');
+		}
+		
+		function showLocationError(error) {
+			var errors = {
+				1: 'Permission denied',
+			    2: 'Position unavailable',
+			    3: 'Request timeout'};
+			  alert("Sorry, we were unable to detect your location because: " + errors[error.code]);
+		}
+		
+		
+		function setPermissionVisibility(visible) {
+			var permissionsDialog = $('#permissions_area');
+			if((visible == undefined || !visible) && !window.locationReturned)
+				permissionsDialog.animate({'top':'0'}); 
+			else
+				permissionsDialog.animate({'top':'-100px'}); 
+		}
 	</script>
 	</body>
 </html>

@@ -17,8 +17,6 @@ import com.hourlyweather.yrno.forecast.ForecastFetcher;
 public class HourlyWeatherByLocationServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	    throws IOException {
-	resp.setContentType("text/html; charset=UTF-8");
-
 	Double lat = null, lon = null;
 	int timezoneOffset = 0;
 	
@@ -48,6 +46,7 @@ public class HourlyWeatherByLocationServlet extends HttpServlet {
 	ForecastBackFillUtil.backfillForecast(forecast);
 	
 	// build the forecast and add it to the response
+	resp.setContentType("application/json; charset=UTF-8");
 	PrintWriter writer = resp.getWriter();
 	HourlyForecastBuilder.writeForecast(forecast, writer);
 	writer.close();

@@ -9,6 +9,9 @@ import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.google.appengine.repackaged.org.json.JSONArray;
+import com.google.appengine.repackaged.org.json.JSONException;
+import com.google.appengine.repackaged.org.json.JSONObject;
 import com.hourlyweather.forecast.ForecastHour;
 import com.hourlyweather.forecast.HourlyForecast;
 
@@ -28,49 +31,42 @@ public class HourlyForecastBuilder {
 	    // create the forecast list
 	    ForecastHour[] forecastHours = forecast.getForecastHours();
 	    ForecastHour forecastHour;
+	    JSONObject jsonForecast = new JSONObject();
+	    JSONArray jsonForecastHours = new JSONArray();
 	    for (int i = 0; i < forecastHours.length; i++) {
 		forecastHour = forecastHours[i];
+		JSONObject jsonHour = new JSONObject();
 
 		if (forecastHour != null) {
-		    if (i == 0
-			    || forecastTime.get(DateTimeFieldType.hourOfDay()) == 0) {
-			writer.append("<div class='header'>");
-			writer.append(dayFormatter.print(forecastTime));
-			writer.append("</div>");
-		    }
-
-		    writer.append("<div class='forecast_hour");
-		    if (i == 0)
-			writer.append(" current");
-		    if (!forecastHour.isSunUp())
-			writer.append(" night");
-		    if (i % 2 == 1)
-			writer.append(" alt");
+		    if (i == 0 || forecastTime.get(DateTimeFieldType.hourOfDay()) == 0) 
+			jsonHour.put("date", dayFormatter.print(forecastTime));
 		    
-		    writer.append("'><img src='");
-		    writer.append(ForecastSymbolUtil
-			    .getForecastSymbol(forecastHour));
-		    writer.append("' /><div>");
-		    writer.append(hourFormatter.print(forecastTime));
-		    writer.append("</div><div>wind: ");
-		    writer.append(formatWindSpeed(forecastHour));
-		    writer.append("</div><div>");
-		    writer.append(formatTemperature(forecastHour));
-		    writer.append("</div><div>precip: ");
-		    writer.append(formatPrecipitation(forecastHour));
-		    writer.append("</div></div>");
-		} else
-		    writer.append("<div>forecast error</div>");
-
+		    jsonHour.put("sunUp", forecastHour.isSunUp());
+		    jsonHour.put("symbolCode", forecastHour.getSymbolCode());
+		    jsonHour.put("hour", hourFormatter.print(forecastTime));
+		    jsonHour.put("wind", formatWindSpeed(forecastHour));
+		    jsonHour.put("temp", formatTemperature(forecastHour));
+		    jsonHour.put("precip", formatPrecipitation(forecastHour));
+		    
+		    jsonForecastHours.put(i, jsonHour);
+		} else {
+		    jsonForecast.put("error", "there was an error generating your forecast.");
+		    break;
+		}
 		// increment the forecast time to move to the next hour
 		forecastTime.addHours(1);
 	    }
-
+	    jsonForecast.put("forecastHours", jsonForecastHours);
+	    
+	    writer.append(jsonForecast.toString());
 	    writer.flush();
+	    
 	} catch (IOException e) {
 	    // this should never be thrown since I only use String and Print
 	    // writers
 	    // we can't do much anyway
+	} catch (JSONException e) {
+	    
 	}
     }
 
