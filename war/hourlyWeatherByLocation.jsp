@@ -10,7 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
   	<meta name="apple-mobile-web-app-capable" content="yes" /> 
-	<title> Hour Weather, your location aware hourly forecast </title>	
+	<title> Hour Weather, dead easy location aware hourly forecast</title>	
 	<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAtBXrBPeu06XUpudOXcQOuxRX2HH5zuNNjZghGMsxwI9-Ikp8AhSUmG3y0tErgw-y4DIX6YIBfiIDCw"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 	<script type="text/javascript">
