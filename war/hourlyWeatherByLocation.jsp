@@ -460,6 +460,17 @@
 			return false;
 		}
 		
+		function animateToDark(object) {
+			var brightness = 255;
+			var interval = setInterval(function() {
+				if(brightness > 100) {
+					object.css('background-color','rgb(' + brightness + ',' + brightness + ',' + brightness + ')');
+					brightness -= 5;
+				}else
+					 clearInterval(interval);
+			}, 50);
+		}
+		
 		function animateDiorama(firstForecastHour) {
 			//if night then we need to remove the sun first
 			if(!firstForecastHour.sunUp) {
@@ -474,9 +485,9 @@
 			//set the day/night states
 			if(!forecastHour.sunUp) {
 				$('.day').removeClass('day').addClass('night');
+				animateToDark($('#head'));
 			}
 			//position the sun/moon based on the forecast
-			
 			$('#day-night').animate({'top': -193 + (forecastHour.symbolCode > 5? (16 * forecastHour.symbolCode - 1):0) + 'px'}, 2500);
 			$('#day-night-sm').animate({'top':-160 + (9 * forecastHour.symbolCode - 1) + 'px'}, 3000);
 			
