@@ -396,19 +396,14 @@
 		jQuery.easing.def = "easeOutBounce";
 		
 		if (navigator.geolocation) {
- 			window.setTimeout(setPermissionVisibility, 1100);
- 			
+ 			window.setTimeout(setPermissionVisibility, 1100); 			
  			//request location
- 			navigator.geolocation.getCurrentPosition(getForecast, showLocationError, {timeout: 5000});
- 			
- 			//drop the sun down
- 			
+ 			navigator.geolocation.getCurrentPosition(getForecast, showLocationError, {timeout: 5000}); 			
 		} else {
 			alert('Your browser is just to darn old, and doesn\'t support GeoLocation.  Sorry.');
 		}
 		
 		function getForecast(position) {
-		
 			window.locationReturned = true;
 			setPermissionVisibility(false);
 			//set loading indicator
@@ -419,9 +414,8 @@
 		function displayForecast(json) {
 			//make sure the dom is ready
 			$().ready(function() {
-				if(json.error != undefined) {
+				if(json.error != undefined)
 					alert(json.error);
-				}
 				
 				var forecastHours = json.forecastHours;
 				
@@ -449,13 +443,13 @@
 		}
 		
 		function isHot(hour) {
-			if(hour.temp[0] > 1 && hour.temp[1] >= 0 && hour.temp[1] <= 9)
+			if(hour.temp[0] > 1 &&  parseInt(hour.temp[1]) >= 0 &&  parseInt(hour.temp[1]) <= 9)
 				return true;
 			return false;
 		}
 		
 		function isWindy(hour) {
-			if(hour.wind[0] > 2 && hour.wind[1] >= 0 && hour.wind[1] <= 9)
+			if(hour.wind[0] > 2 &&  parseInt(hour.wind[1]) >= 0 &&  parseInt(hour.wind[1]) <= 9)
 				return true;
 			return false;
 		}
