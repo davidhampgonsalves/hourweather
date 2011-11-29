@@ -21,7 +21,10 @@ public class HourlyForecastBuilder {
     private static final DateTimeFormatter hourFormatter = DateTimeFormat
 	    .forPattern("hh:00 aa");
 
-    private static DecimalFormat windSpeedFormat = new DecimalFormat("#.#");
+    private static final DecimalFormat windSpeedFormat = new DecimalFormat(
+	    "#.#");
+    private static final DecimalFormat precipitationFormat = new DecimalFormat(
+	    "#.##");
 
     public static void writeForecast(HourlyForecast forecast, Writer writer) {
 
@@ -38,35 +41,38 @@ public class HourlyForecastBuilder {
 		JSONObject jsonHour = new JSONObject();
 
 		if (forecastHour != null) {
-		    if (i == 0 || forecastTime.get(DateTimeFieldType.hourOfDay()) == 0) 
+		    if (i == 0
+			    || forecastTime.get(DateTimeFieldType.hourOfDay()) == 0)
 			jsonHour.put("date", dayFormatter.print(forecastTime));
-		    
+
 		    jsonHour.put("sunUp", forecastHour.isSunUp());
 		    jsonHour.put("symbolCode", forecastHour.getSymbolCode());
 		    jsonHour.put("hour", hourFormatter.print(forecastTime));
 		    jsonHour.put("wind", formatWindSpeed(forecastHour));
 		    jsonHour.put("temp", formatTemperature(forecastHour));
 		    jsonHour.put("precip", formatPrecipitation(forecastHour));
-		    
+
 		    jsonForecastHours.put(i, jsonHour);
 		} else {
-		    jsonForecast.put("error", "there was an error generating your forecast.");
+		    jsonForecast.put("error",
+			    "there was an error generating your forecast.");
 		    break;
 		}
 		// increment the forecast time to move to the next hour
 		forecastTime.addHours(1);
 	    }
 	    jsonForecast.put("forecastHours", jsonForecastHours);
-	    
+
+	    System.out.println(jsonForecast.toString());
 	    writer.append(jsonForecast.toString());
 	    writer.flush();
-	    
+
 	} catch (IOException e) {
 	    // this should never be thrown since I only use String and Print
 	    // writers
 	    // we can't do much anyway
 	} catch (JSONException e) {
-	    
+
 	}
     }
 
@@ -78,13 +84,19 @@ public class HourlyForecastBuilder {
      */
     public static String formatTemperature(ForecastHour forecastHour) {
 	// convert celsius to fahrenheit and format
-	return forecastHour.getTemp().intValue() + "\u2103 | " + (int)(1.8 * forecastHour.getTemp() + 32) + "\u2109";
+	return forecastHour.getTemp().intValue() + "\u2103 | "
+		+ (int) (1.8 * forecastHour.getTemp() + 32) + "\u2109";
     }
 
     public static String formatPrecipitation(ForecastHour forecastHour) {
-	if (forecastHour.getPrecipitation() != null && forecastHour.getPrecipitation().doubleValue() > 0)
-	    return windSpeedFormat.format(forecastHour.getPrecipitation())
-		    + " mm";
+	if (forecastHour.getPrecipitation() != null
+		&& forecastHour.getPrecipitation().doubleValue() > 0)
+	    if (forecastHour.getPrecipitation().doubleValue() >= 1)
+		return windSpeedFormat.format(forecastHour
+			.getPrecipitation()) + " mm";
+	    else
+		return precipitationFormat.format(forecastHour
+			.getPrecipitation()) + " mm";
 	else
 	    return "none";
 

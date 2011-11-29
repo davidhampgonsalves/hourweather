@@ -197,7 +197,6 @@
 		}
 		
 		.obj {
-			width:100%;
 			margin:0 auto;
 			margin-top:-10px;
 			height:70px;
@@ -262,7 +261,7 @@
 		}
 		
 		.loading .obj {
-			-webkit-animation-name: spinnerRotate;
+			-webkit-animation-name: rotate;
 			-webkit-animation-duration: 5s;
 			-webkit-animation-iteration-count: infinite;
 			-webkit-animation-timing-function: linear;
@@ -293,7 +292,7 @@
 			text-align:center; 
 		}
 
-		@-webkit-keyframes spinnerRotate {
+		@-webkit-keyframes rotate {
 			from {-webkit-transform:rotate(0deg);}
 			to {-webkit-transform:rotate(360deg);}
 		}
@@ -430,7 +429,7 @@
 					if(hour.date != undefined)
 						forecastArea.append('<div class=day-start>' + hour.date + '</div>');
 					//add the forecast data to the forecast area
-					forecastArea.append('<div class=\'hour ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + (-71.5 * hour.symbolCode - 1) + (hour.sunUp ? 'px -160px':'px -230px') + '\'></div> <div class=\'temp ' + (isCold(hour) ? 'cold':'') + (isHot(hour) ? 'hot':'') + '\'><label>temperature: </label>' + hour.temp + '</div> <div class=\'wind ' + (isWindy(hour)? 'windy':'') + '\'><label>wind speed: </label>' + hour.wind + '</div> <div class=precip><label>precipitation: </label>' + hour.precip + '</div> </div>');
+					forecastArea.append('<div class=\'hour ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + (-71.5 * (hour.symbolCode - 1)) + (hour.sunUp ? 'px -160px':'px -230px') + '\'></div> <div class=\'temp ' + (isCold(hour) ? 'cold':'') + (isHot(hour) ? 'hot':'') + '\'><label>temperature: </label>' + hour.temp + '</div> <div class=\'wind ' + (isWindy(hour)? 'windy':'') + '\'><label>wind speed: </label>' + hour.wind + '</div> <div class=precip><label>precipitation: </label>' + hour.precip + '</div> </div>');
 				}
 				
 			});
@@ -489,7 +488,7 @@
 			//avoid using icons with sun/moons
 			var symbolCode = forecastHour.symbolCode - 1;
 			if(symbolCode < 2) symbolCode = 2;
-			if(symbolCode == 3) symbolCode = 7
+			if(symbolCode == 4) symbolCode = 8
 			if(symbolCode > 4 && symbolCode < 8) symbolCode += 5;
 
 			$('#weather-1 .obj, #weather-2 .obj').css('background-position', -71.5 * symbolCode + 'px -160px');
