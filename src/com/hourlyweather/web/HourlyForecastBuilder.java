@@ -63,7 +63,6 @@ public class HourlyForecastBuilder {
 	    }
 	    jsonForecast.put("forecastHours", jsonForecastHours);
 
-	    System.out.println(jsonForecast.toString());
 	    writer.append(jsonForecast.toString());
 	    writer.flush();
 
