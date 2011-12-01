@@ -157,9 +157,11 @@
 		div.temp {width:250px;}
 		div.precip {width:210px;margin-right:0}
 		
-		.cold {color: #2eb1ff;}
-		.hot {color: #ff4038;}
-		.windy {color: #ff6f09;}
+		.cold {color: #3F6B94}
+		.hot {color: #9E1008}
+		
+		.strong {color: #EE5709}
+		.moderate {color:#FCA21E}
 		
 		label {
 			font-size:15px;
@@ -429,8 +431,8 @@
 			//set loading indicator
 			$('#main').html('<div class=loading><div class=obj></div><div class=loading-text>loading...!</div></div>');
 			
-			$.getJSON("HourlyWeatherByLocation", {lat: position.coords.latitude, long: position.coords.longitude, timezoneOffset: - new Date().getTimezoneOffset()/60}, function(json) {displayForecast(json, position);}).error(showError);
-			//displayForecast({"forecastHours":[{"wind":1.7,"symbolCode":3,"precip":0,"temp":7.9,"sunUp":true,"hour":"04:00 PM","date":"Tuesday, November 29"},{"wind":1.7,"symbolCode":3,"precip":0,"temp":7.9,"sunUp":false,"hour":"05:00 PM"},{"wind":1.7,"symbolCode":3,"precip":0,"temp":7.9,"sunUp":false,"hour":"06:00 PM"},{"wind":2.6,"symbolCode":3,"precip":0,"temp":6.8,"sunUp":false,"hour":"07:00 PM"},{"wind":2.6,"symbolCode":3,"precip":0,"temp":6.8,"sunUp":false,"hour":"08:00 PM"},{"wind":2.6,"symbolCode":3,"precip":0,"temp":6.8,"sunUp":false,"hour":"09:00 PM"},{"wind":2.3,"symbolCode":4,"precip":0.016666666666666666,"temp":7.3,"sunUp":false,"hour":"10:00 PM"},{"wind":2.3,"symbolCode":4,"precip":0.016666666666666666,"temp":7.3,"sunUp":false,"hour":"11:00 PM"},{"wind":2.3,"symbolCode":4,"precip":0.016666666666666666,"temp":7.3,"sunUp":false,"hour":"12:00 AM","date":"Wednesday, November 30"},{"wind":2.1,"symbolCode":9,"precip":0.06666666666666667,"temp":8.8,"sunUp":false,"hour":"01:00 AM"},{"wind":2.1,"symbolCode":9,"precip":0.06666666666666667,"temp":8.8,"sunUp":false,"hour":"02:00 AM"},{"wind":2.1,"symbolCode":9,"precip":0.06666666666666667,"temp":8.8,"sunUp":false,"hour":"03:00 AM"},{"wind":3.5,"symbolCode":3,"precip":0.049999999999999996,"temp":11.1,"sunUp":false,"hour":"04:00 AM"},{"wind":3.5,"symbolCode":3,"precip":0.049999999999999996,"temp":11.1,"sunUp":false,"hour":"05:00 AM"},{"wind":3.5,"symbolCode":3,"precip":0.049999999999999996,"temp":11.1,"sunUp":false,"hour":"06:00 AM"},{"wind":5.8,"symbolCode":9,"precip":0.25,"temp":12.4,"sunUp":true,"hour":"07:00 AM"},{"wind":5.8,"symbolCode":9,"precip":0.25,"temp":12.4,"sunUp":true,"hour":"08:00 AM"},{"wind":5.8,"symbolCode":9,"precip":0.25,"temp":12.4,"sunUp":true,"hour":"09:00 AM"},{"wind":7.3,"symbolCode":10,"precip":1.5,"temp":13.8,"sunUp":true,"hour":"10:00 AM"},{"wind":7.3,"symbolCode":10,"precip":1.5,"temp":13.8,"sunUp":true,"hour":"11:00 AM"},{"wind":7.3,"symbolCode":10,"precip":1.5,"temp":13.8,"sunUp":true,"hour":"12:00 PM"},{"wind":8.6,"symbolCode":10,"precip":2.6833333333333336,"temp":13.6,"sunUp":true,"hour":"01:00 PM"},{"wind":8.6,"symbolCode":10,"precip":2.6833333333333336,"temp":13.6,"sunUp":true,"hour":"02:00 PM"},{"wind":8.6,"symbolCode":10,"precip":2.6833333333333336,"temp":13.6,"sunUp":true,"hour":"03:00 PM"},{"wind":8.3,"symbolCode":10,"precip":2.1999999999999997,"temp":13.6,"sunUp":true,"hour":"04:00 PM"},{"wind":8.3,"symbolCode":10,"precip":2.1999999999999997,"temp":13.6,"sunUp":false,"hour":"05:00 PM"},{"wind":8.3,"symbolCode":10,"precip":2.1999999999999997,"temp":13.6,"sunUp":false,"hour":"06:00 PM"},{"wind":7.6,"symbolCode":9,"precip":0.7833333333333333,"temp":13.4,"sunUp":false,"hour":"07:00 PM"},{"wind":7.6,"symbolCode":9,"precip":0.7833333333333333,"temp":13.4,"sunUp":false,"hour":"08:00 PM"},{"wind":7.6,"symbolCode":9,"precip":0.7833333333333333,"temp":13.4,"sunUp":false,"hour":"09:00 PM"},{"wind":4.4,"symbolCode":3,"precip":0,"temp":11.2,"sunUp":false,"hour":"10:00 PM"},{"wind":4.4,"symbolCode":3,"precip":0,"temp":11.2,"sunUp":false,"hour":"11:00 PM"},{"wind":4.4,"symbolCode":3,"precip":0,"temp":11.2,"sunUp":false,"hour":"12:00 AM","date":"Thursday, December 01"},{"wind":2,"symbolCode":3,"precip":0,"temp":8.6,"sunUp":false,"hour":"01:00 AM"},{"wind":2,"symbolCode":3,"precip":0,"temp":8.6,"sunUp":false,"hour":"02:00 AM"},{"wind":2,"symbolCode":3,"precip":0,"temp":8.6,"sunUp":false,"hour":"03:00 AM"}]}, position);
+			//$.getJSON("HourlyWeatherByLocation", {lat: position.coords.latitude, long: position.coords.longitude, timezoneOffset: - new Date().getTimezoneOffset()/60}, function(json) {displayForecast(json, position);}).error(showError);
+			displayForecast({"forecastHours":[{"wind":20,"symbolCode":3,"precip":0,"temp":0,"sunUp":true,"hour":"04:00 PM","date":"Thursday, December 01"},{"wind":50,"symbolCode":3,"precip":0,"temp":26,"sunUp":false,"hour":"05:00 PM"},{"wind":3.9,"symbolCode":3,"precip":0,"temp":8,"sunUp":false,"hour":"06:00 PM"},{"wind":3.2,"symbolCode":3,"precip":0,"temp":4.3,"sunUp":false,"hour":"07:00 PM"},{"wind":3.2,"symbolCode":3,"precip":0,"temp":4.3,"sunUp":false,"hour":"08:00 PM"},{"wind":3.2,"symbolCode":3,"precip":0,"temp":4.3,"sunUp":false,"hour":"09:00 PM"},{"wind":3,"symbolCode":2,"precip":0,"temp":3.3,"sunUp":false,"hour":"10:00 PM"},{"wind":3,"symbolCode":2,"precip":0,"temp":3.3,"sunUp":false,"hour":"11:00 PM"},{"wind":3,"symbolCode":2,"precip":0,"temp":3.3,"sunUp":false,"hour":"12:00 AM","date":"Friday, December 02"},{"wind":3,"symbolCode":2,"precip":0,"temp":2.5,"sunUp":false,"hour":"01:00 AM"},{"wind":3,"symbolCode":2,"precip":0,"temp":2.5,"sunUp":false,"hour":"02:00 AM"},{"wind":3,"symbolCode":2,"precip":0,"temp":2.5,"sunUp":false,"hour":"03:00 AM"},{"wind":2.1,"symbolCode":1,"precip":0,"temp":1.2,"sunUp":false,"hour":"04:00 AM"},{"wind":2.1,"symbolCode":1,"precip":0,"temp":1.2,"sunUp":false,"hour":"05:00 AM"},{"wind":2.1,"symbolCode":1,"precip":0,"temp":1.2,"sunUp":false,"hour":"06:00 AM"},{"wind":1.8,"symbolCode":1,"precip":0,"temp":0.6,"sunUp":false,"hour":"07:00 AM"},{"wind":1.8,"symbolCode":1,"precip":0,"temp":0.6,"sunUp":true,"hour":"08:00 AM"},{"wind":1.8,"symbolCode":1,"precip":0,"temp":0.6,"sunUp":true,"hour":"09:00 AM"},{"wind":2.1,"symbolCode":2,"precip":0,"temp":3.5,"sunUp":true,"hour":"10:00 AM"},{"wind":2.1,"symbolCode":2,"precip":0,"temp":3.5,"sunUp":true,"hour":"11:00 AM"},{"wind":2.1,"symbolCode":2,"precip":0,"temp":3.5,"sunUp":true,"hour":"12:00 PM"},{"wind":0.4,"symbolCode":3,"precip":0,"temp":5.3,"sunUp":true,"hour":"01:00 PM"},{"wind":0.4,"symbolCode":3,"precip":0,"temp":5.3,"sunUp":true,"hour":"02:00 PM"},{"wind":0.4,"symbolCode":3,"precip":0,"temp":5.3,"sunUp":true,"hour":"03:00 PM"},{"wind":2.3,"symbolCode":3,"precip":0,"temp":2.5,"sunUp":true,"hour":"04:00 PM"},{"wind":2.3,"symbolCode":3,"precip":0,"temp":2.5,"sunUp":false,"hour":"05:00 PM"},{"wind":2.3,"symbolCode":3,"precip":0,"temp":2.5,"sunUp":false,"hour":"06:00 PM"},{"wind":2.3,"symbolCode":3,"precip":0,"temp":1.4,"sunUp":false,"hour":"07:00 PM"},{"wind":2.3,"symbolCode":3,"precip":0,"temp":1.4,"sunUp":false,"hour":"08:00 PM"},{"wind":2.3,"symbolCode":3,"precip":0,"temp":1.4,"sunUp":false,"hour":"09:00 PM"},{"wind":1.6,"symbolCode":4,"precip":0,"temp":1.8,"sunUp":false,"hour":"10:00 PM"},{"wind":1.6,"symbolCode":4,"precip":0,"temp":1.8,"sunUp":false,"hour":"11:00 PM"},{"wind":1.6,"symbolCode":4,"precip":0,"temp":1.8,"sunUp":false,"hour":"12:00 AM","date":"Saturday, December 03"},{"wind":1.4,"symbolCode":3,"precip":0.016666666666666666,"temp":1.1,"sunUp":false,"hour":"01:00 AM"},{"wind":1.4,"symbolCode":3,"precip":0.016666666666666666,"temp":1.1,"sunUp":false,"hour":"02:00 AM"},{"wind":1.4,"symbolCode":3,"precip":0.016666666666666666,"temp":1.1,"sunUp":false,"hour":"03:00 AM"}]}, position);
 		}
 		
 		function displayForecast(json, position) {
@@ -458,6 +460,7 @@
 							forecastArea.append('<div class=day-start>' + hour.date + '</div>');
 					//add the forecast data to the forecast area
 					forecastArea.append('<div class=\'hour ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + (-71.5 * (hour.symbolCode - 1)) + (hour.sunUp ? 'px -160px':'px -230px') + '\'></div> <div class=\'temp ' + howHot(hour) + '\'><label>temperature: </label><span class=val>' + getTemp(hour) + '</span></div> <div class=\'wind ' + howWindy(hour) + '\'><label>wind speed: </label><span class=val>' + getWind(hour) + '</span></div> <div class=precip><label>precipitation: </label><span class=val>' + getPrecip(hour) + '</span></div> </div>');
+					console.log(hour.temp + ' - ' +howHot(hour));
 				}
 				
 				//hook up the control events/settings
@@ -471,18 +474,17 @@
 		function howHot(hour) {
 			if(hour.temp > 24)
 				return 'hot';
-			if(hour.temp > 14)
-				return 'warm';
-			if(hour.temp < 1)
+			if(hour.temp <= 0)
 				return 'cold';
+			return '';
 		}
 		
 		function howWindy(hour) {
-			if(hour.wind > 25)
+			if(hour.wind >= 25)
 				return 'strong';
-			if(hour.wind > 10)
+			if(hour.wind >= 15)
 				return 'moderate';			
-			return 'light';
+			return '';
 		}
 		
 		function getTemp(hour) {
