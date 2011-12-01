@@ -106,11 +106,11 @@
 		}
 
 		#controls {
+			height:0;
 			float:right;
 		}
 		
 		#controls select {
-			height:35px;
 			margin-right:5px;
 		}
 		
