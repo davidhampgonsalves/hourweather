@@ -48,9 +48,9 @@ public class HourlyForecastBuilder {
 		    jsonHour.put("sunUp", forecastHour.isSunUp());
 		    jsonHour.put("symbolCode", forecastHour.getSymbolCode());
 		    jsonHour.put("hour", hourFormatter.print(forecastTime));
-		    jsonHour.put("wind", formatWindSpeed(forecastHour));
-		    jsonHour.put("temp", formatTemperature(forecastHour));
-		    jsonHour.put("precip", formatPrecipitation(forecastHour));
+		    jsonHour.put("wind", forecastHour.getWindSpeed());
+		    jsonHour.put("temp", forecastHour.getTemp());
+		    jsonHour.put("precip", forecastHour.getPrecipitation());
 
 		    jsonForecastHours.put(i, jsonHour);
 		} else {
@@ -103,8 +103,7 @@ public class HourlyForecastBuilder {
     }
 
     public static String formatWindSpeed(ForecastHour forecastHour) {
-	return windSpeedFormat.format(forecastHour.getWindSpeed() * 3.6)
-		+ " km/h";
+	return windSpeedFormat.format(forecastHour.getWindSpeed()); // in miles
     }
 
 }
