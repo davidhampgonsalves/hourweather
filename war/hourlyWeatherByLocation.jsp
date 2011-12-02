@@ -429,7 +429,7 @@
 			setPermissionVisibility(false);
 			
 			//set loading indicator
-			$('#main').html('<div class=loading><div class=obj></div><div class=loading-text>loading...!</div></div>');
+			$('#forecast').html('<div class=loading><div class=obj></div><div class=loading-text>loading...!</div></div>');
 			
 			$.getJSON("HourlyWeatherByLocation", {lat: position.coords.latitude, long: position.coords.longitude, timezoneOffset: - new Date().getTimezoneOffset()/60}, function(json) {displayForecast(json, position);}).error(showError);
 		}
