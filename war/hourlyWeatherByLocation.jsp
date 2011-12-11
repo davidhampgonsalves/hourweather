@@ -2,12 +2,12 @@
 <!doctype html>
 <html>
 <head>
-	<meta name='keywords' content='weather forecast android location hour hourly'></meta>
-	<meta name='description' content='super accurate location aware hourly weather forecast and android app'> </meta>
+	<meta name='keywords' content='weather forecast location hour hourly'></meta>
+	<meta name='description' content='super accurate location aware hourly weather forecasts'> </meta>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
   	<meta name="apple-mobile-web-app-capable" content="yes" /> 
-	<title> Hour Weather is location based, dead easy, forecasting </title>	
+	<title> Hour Weather is your location based, dead easy, weather forecasting app</title>	
 	<script type="application/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAtBXrBPeu06XUpudOXcQOuxRX2HH5zuNNjZghGMsxwI9-Ikp8AhSUmG3y0tErgw-y4DIX6YIBfiIDCw"></script>
 	<script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 	<script type="application/javascript">
@@ -105,9 +105,11 @@
 			margin-top:-20px;
 		}
 
-		#controls {
+		.controls {
 			height:0;
 			float:right;
+			margin-right: 10px;
+			font-size:15px;
 		}
 		
 		#controls select {
@@ -128,10 +130,10 @@
 		
 		.day-start {
 			background:#d8f6ea;
-			line-height: 50px;
-			height: 50px;
+			line-height: 80px;
+			height: 80px;
 			padding-left:20px;
-			font-size: 18px;
+			font-size:20px;
 		}
 		
 		.hour.alt {background: #dcefff}
@@ -324,7 +326,7 @@
 		<div id='permissions_area'>
 			<div id='arrow'> </div>
 			<div id='permissions_msg'>
-				Allow your browser to share your rough location with us and we'll create an awesome hourly forecast just for you.
+				Share your location and we'll build an awesome hourly weather forecast just for you!
 			</div>
 		</div>
 		<div id=diorama>	
@@ -355,6 +357,7 @@
 		<div id=clouds> </div>
 	</div>
 	<div id=body>
+		<a name=top></a>
 		<div id=forecast class=content>
 			<div id=marketing-blurb>
 				<div class=important>	
@@ -365,7 +368,7 @@
 		</div>
 					
 		<div id=about class=content>
-			<h3>about</h3>Hour Weather uses the geo capatabilities of HTML5 to determine your rough location and then based on that is able to create a forecast just for you using the awesome <a href='http://www.yr.no/'>yr.no</a> weather service.
+			<h3>about</h3>Hour Weather uses the geo capatabilities of HTML5 to determine your rough location and then based on that is able to create a weather forecast just for you using the awesome <a href='http://www.yr.no/'>yr.no</a> weather forecasting service.
 			<br><br>
 			In the office, from your home or on vacation, Hour Weather will always give you a super accurate hourly weather forecast. 
 			
@@ -454,12 +457,11 @@
 					var hour = forecastHours[i];
 					if(hour.date != undefined)
 						if(i == 0)
-							forecastArea.append('<div class=day-start>' + hour.date + ' @ <a href=\'http://maps.google.com/maps?q=' + position.coords.latitude + ',' + position.coords.longitude + '\'>(' + Math.round(position.coords.latitude) + '&deg;,' + Math.round(position.coords.longitude)  + '&deg;)</a><div id=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
+							forecastArea.append('<div class=day-start>' + hour.date + ' @ <a href=\'http://maps.google.com/maps?q=' + position.coords.latitude + ',' + position.coords.longitude + '\'>(' + Math.round(position.coords.latitude) + '&deg;,' + Math.round(position.coords.longitude)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
 						else
-							forecastArea.append('<div class=day-start>' + hour.date + '</div>');
+							forecastArea.append('<div class=day-start>' + hour.date + '<div class=controls><a href=#top>back to top &uarr;</a></div></div>');
 					//add the forecast data to the forecast area
 					forecastArea.append('<div class=\'hour ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + (-71.5 * (hour.symbolCode - 1)) + (hour.sunUp ? 'px -160px':'px -230px') + '\'></div> <div class=\'temp ' + howHot(hour) + '\'><label>temperature: </label><span class=val>' + getTemp(hour) + '</span></div> <div class=\'wind ' + howWindy(hour) + '\'><label>wind speed: </label><span class=val>' + getWind(hour) + '</span></div> <div class=precip><label>precipitation: </label><span class=val>' + getPrecip(hour) + '</span></div> </div>');
-					console.log(hour.temp + ' - ' +howHot(hour));
 				}
 				
 				//hook up the control events/settings
@@ -467,6 +469,8 @@
 				controls.find('select').change(updateUnitConfig);
 				controls.find('#temp-units').val(isCelsius() ? 'celsius':'fahrenheit');
 				controls.find('#units').val(isMetric() ? 'metric':'imperial');
+				
+				setupStickyHeaders();
 			});
 		}
 		
@@ -619,6 +623,51 @@
 				permissionsDialog.animate({'top':'0'}); 
 			else
 				permissionsDialog.animate({'top':'-150px'}); 
+		}
+		
+		function setupStickyHeaders() {
+			//get initial offset positions
+			var headers = [];
+			$.each($('div.day-start'), function(i, headerDiv) {
+				var header = $(headerDiv);				
+				headers.push({element:header, orgOffset: header.offset().top});
+			});
+			
+			if(headers.length == 0)
+				return;
+				
+			var orgCSS = {width:headers[0].element.css('width'), position:headers[0].element.css('position'), height:headers[0].element.css('height')};
+
+			//handle scrolling
+			$(window).scroll(function(){
+				var scrollTop = $(this).scrollTop();
+				//stick headers
+				for(i in headers) {
+					var header = headers[i];
+					
+					if(isStuck(header))
+						header.element.css('top','0')
+						
+					if(scrollTop < header.orgOffset - parseInt(orgCSS.height)) 
+						break;
+						
+					if(!isStuck(header))
+						if(scrollTop >= header.orgOffset)
+							header.element.css('width', orgCSS.width).css('position', 'fixed').css('top','0').before('<div class=day-start> </div>');
+						else if(i > 0)
+							headers[i-1].element.css('top', header.orgOffset - scrollTop - parseInt(orgCSS.height));
+				}
+				
+				//unstick headers
+				for(i in headers) {
+					var header = headers[i];
+					if(!isStuck(header)) break;
+					if(scrollTop <= header.orgOffset)
+						header.element.css('position', orgCSS.position).css('top','').prev().remove();
+				}
+			});
+			
+			function isStuck(header) {return header.element.css('position') === 'fixed'}
 		}
 	</script>
 	</body>
