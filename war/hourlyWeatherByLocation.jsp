@@ -31,6 +31,8 @@
 			color:#333;
 		}
 		
+		a {color: #333;}
+		
 		h2 {
 			font-size:15px;
 			display:inline;
@@ -102,7 +104,7 @@
 		
 		#forecast {
 			min-height: 500px;
-			margin-top:-20px;
+			margin-top:-50px;
 		}
 
 		.controls {
@@ -121,19 +123,75 @@
 			float:left;
 		}
 		
-		.hour {
-			background:rgb(250,250,250);
-			overflow:auto;
-			padding:5px 0;
-			border-bottom: 2px solid rgb(230,230,230);
-		}
-		
 		.day-start {
 			background:#d8f6ea;
 			line-height: 80px;
 			height: 80px;
 			padding-left:20px;
 			font-size:20px;
+		}
+		
+		#links {
+			float:right;
+			text-align:right;
+			margin-top:-30px;
+		}
+		
+		#links a {
+			text-decoration:none;
+			background: white;
+			border-radius: 5px;
+			padding:5px;
+		}
+		
+		#links a:hover {
+			padding:8px;
+		}
+		
+		#links a.selected {
+			padding:8px;
+		}
+		
+		#forecast .day {
+			display:block;
+			color:#333;
+			height:150px;
+			text-decoration:none;
+		}
+		#forecast .day:hover {background:#E7CCB2;}
+
+		.day .date {
+			float:left;
+			width: 150px;
+		}
+
+		#forecast .day div {text-align:center; width: 166px; float:left}
+		.day .date {padding-top: 30px;}
+		.day .date .day-of-week {font-size: 25px;}
+		.day .date .month {font-size: 16px;}
+		.day .date .day-of-month {font-size: 40px;}
+		.day .date .day-of-month span {font-size: 12px;}
+
+		#forecast .day .icon.single .symbol {height: 105px;width:105px;margin-top:10px;background-size: 1629px 445px;}
+		.day .icon.single .symbol.right {display:none}
+
+		.day .icon.double .symbol.left {width:75px;}
+		.day .icon.double .symbol.right {width:75px;}
+
+		#forecast .day div.wind {width: 250px}
+		#forecast .day div.temp {width: 250px} 
+		#forecast .day div.precip {}
+		.day label {display:block; padding-top: 40px;}
+		.day .val {font-size: 25px; padding-top: 20px; display:block}
+		
+		.hour {
+			padding:5px 0;
+		}
+
+		.row {
+			background:rgb(250,250,250);
+			overflow:auto;
+			border-bottom: 2px solid rgb(230,230,230);
 		}
 		
 		.hour.alt {background: #dcefff}
@@ -376,13 +434,17 @@
 		</about>
 	</div>
 	<script type='text/javascript'>
-		  (function() {
+		<% if(request.getAttribute("city") != null) { %>
+				var cityInfo = {city: '<%= request.getAttribute("city") %>', lat: <%= request.getAttribute("lat") %>, lon:<%= request.getAttribute("lon") %>, timeOffset: <%= request.getAttribute("timezone") %>};
+		<%}%>
+		
+		//google +1 button	
+		(function() {
 		    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
 		    po.src = 'https://apis.google.com/js/plusone.js';
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 		  })();
 
-		
 		 /* This is a small part of jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
 		 That is used under a BSD Liscense and was created by: George McGinley Smith */
 		jQuery.easing['jswing'] = jQuery.easing['swing'];
@@ -409,8 +471,12 @@
 			}
 		});
 
-		window.locationReturned = false;
-		if (typeof(localStorage) == 'undefined' ) 
+		var DAY = 'day';
+		var WEEKLY = '#weekly';
+		var SUFFIXES = ['st', 'nd', 'rd', 'th'];
+	
+		var locationReturned = false;
+		if (typeof(localStorage) == 'undefined') 
 			alert('Sorry, your browser is just too old to handle this site.');
 		else if(isFirstVisit()) {
 			localStorage.setItem('celsius', true);
@@ -419,97 +485,190 @@
 		
 		jQuery.easing.def = "easeOutBounce";
 		
-		if (navigator.geolocation) {
+		if(typeof cityInfo !== "undefined")
+			getForecast(cityInfo);
+		else if (navigator.geolocation) {
  			window.setTimeout(setPermissionVisibility, 1100); 			
  			//request location
  			navigator.geolocation.getCurrentPosition(getForecast, showLocationError, {timeout: 5000}); 			
-		} else {
+		} else
 			alert('Sorry but your browser is just to darn old.  It doesn\'t support GeoLocation.');
-		}
 		
-		function getForecast(position) {
-			window.locationReturned = true;
+		function getForecast(positionData) {
+			locationReturned = true;
 			setPermissionVisibility(false);
 			
 			//set loading indicator
 			$('#forecast').html('<div class=loading><div class=obj></div><div class=loading-text>loading...!</div></div>');
+					
+			if(positionData.city == undefined)
+				var position = {lat: positionData.coords.latitude, lon: positionData.coords.longitude, timeOffset: - new Date().getTimezoneOffset()/60};
+			else
+				var position = {city: positionData.city, lat: positionData.lat, lon: positionData.lon, timeOffset: positionData.timeOffset};
+				
 			
-			$.getJSON("HourlyWeatherByLocation", {lat: position.coords.latitude, long: position.coords.longitude, timezoneOffset: - new Date().getTimezoneOffset()/60}, function(json) {displayForecast(json, position);}).error(showError);
+			$.getJSON("/HourlyWeatherByLocation", {lat: position.lat, long: position.lon, timezoneOffset: position.timeOffset}, function(json) {displayForecast(json, position);}).error(showError);
 		}
 		
-		function displayForecast(json, position) {
-			window.forecastData = json;
+		function displayForecast(forecast, position) {
 			
 			//make sure the dom is ready
 			$().ready(function() {
-				if(window.forecastData.error != undefined)
-					alert(window.forecastData.error);
-				
-				var forecastHours = window.forecastData.forecastHours;
+				if(forecast.error != undefined)
+					alert(forecast.error);		
 				
 				//set the day/night status + set the position
-				animateDiorama(forecastHours[0]);
+				animateDiorama(forecast.forecastHours[0]);
 				
 				var forecastArea = $('#forecast');
 				forecastArea.html('');
-				var forecastLength = forecastHours.length;
-				for(var i=0; i < forecastLength ; i += 1) {
-					var hour = forecastHours[i];
-					if(hour.date != undefined)
-						if(i == 0)
-							forecastArea.append('<div class=day-start>' + hour.date + ' @ <a href=\'http://maps.google.com/maps?q=' + position.coords.latitude + ',' + position.coords.longitude + '\'>(' + Math.round(position.coords.latitude) + '&deg;,' + Math.round(position.coords.longitude)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
-						else
-							forecastArea.append('<div class=day-start>' + hour.date + '<div class=controls><a href=#top>back to top &uarr;</a></div></div>');
-					//add the forecast data to the forecast area
-					forecastArea.append('<div class=\'hour ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + (-71.5 * (hour.symbolCode - 1)) + (hour.sunUp ? 'px -160px':'px -230px') + '\'></div> <div class=\'temp ' + howHot(hour) + '\'><label>temperature: </label><span class=val>' + getTemp(hour) + '</span></div> <div class=\'wind ' + howWindy(hour) + '\'><label>wind speed: </label><span class=val>' + getWind(hour) + '</span></div> <div class=precip><label>precipitation: </label><span class=val>' + getPrecip(hour) + '</span></div> </div>');
-				}
+				displayLinks(forecastArea);
 				
+				$(window).off('hashchange');
+				$(window).on('hashchange', function() {displayForecast(forecast, position);});
+				
+				if(isWeeklyForecast())
+					displayWeekly(forecastArea, forecast.forecastHours, position);
+				else
+					displayHourly(forecastArea, forecast.forecastHours, position);	
+					
 				//hook up the control events/settings
-				var controls = $('#controls');
-				controls.find('select').change(updateUnitConfig);
+				var controls = $('.controls');
+				controls.find('select').change(function() {
+					updateUnitConfig(this);
+					displayForecast(forecast, position);
+				});
 				controls.find('#temp-units').val(isCelsius() ? 'celsius':'fahrenheit');
 				controls.find('#units').val(isMetric() ? 'metric':'imperial');
 				
 				setupStickyHeaders();
+				
+				scrollToDay();
 			});
 		}
 		
+		function displayLinks(forecastArea) {
+			forecastArea.append('<div id=links><a href=#hourly' + (!isWeeklyForecast() ? ' class=selected':'') + '>hourly</a> <a href=#weekly' + (isWeeklyForecast() ? ' class=selected':'') + '>weekly</a></div>');
+		}
+
+		
+		function displayHourly(forecastArea, forecastHours, position) {
+				var forecastLength = forecastHours.length;
+				var dayCount = 0;
+				for(var i=0; i < forecastLength ; i += 1) {
+					var hour = forecastHours[i];
+					if(hour.date != undefined) {
+						forecastArea.append('<div class=anchor day=' + dayCount + '></div>');
+						if(i == 0)
+							forecastArea.append('<div class=day-start>' + hour.date + ' @ ' + (position.city === undefined ? '' : position.city) + ' <a href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>(' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
+						else
+							forecastArea.append('<div class=day-start>' + hour.date + '<div class=controls><a href=#top>back to top &uarr;</a></div></div>');
+						dayCount++;
+					}
+					//add the forecast data to the forecast area
+					forecastArea.append('<div class=\'hour row ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + getSymbolPosition(hour.symbolCode, hour.sunUp) + '\'></div> <div class=\'temp ' + howHot(hour) + '\'><label>temperature: </label><span class=val>' + getTemp(hour) + '</span></div> <div class=\'wind ' + howWindy(hour) + '\'><label>wind speed: </label><span class=val>' + getWind(hour) + '</span></div> <div class=precip><label>precipitation: </label><span class=val>' + getPrecip(hour) + '</span></div> </div>');
+				}
+		}
+		
+		function displayWeekly(forecastArea, forecastHours, position) {
+			forecastArea.append('<div class=day-start>weekly forecast @ ' + (position.city === undefined ? '' : position.city) + ' <a href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>(' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
+			var forecastLength = forecastHours.length;
+			var precip, min, max, dateParts, symbolCounts, dayCount=0;
+			for(var i=0; i < forecastLength ; i += 1) {
+				var hour = forecastHours[i];
+				if(hour.date != undefined) {
+					if(i != 0) {
+						var symbolCount = 0, symbol, symbol2;
+						for(s in symbolCounts)
+							if(symbolCounts[s] > symbolCount) {
+								symbol2 = symbol;
+								symbol = s;
+							}
+						forecastArea.append('<a class="day row" href=#hourly?day=' + dayCount + '><div class=date><div class=day-of-week>' + dateParts[0] + '</div><div class=month>' + dateParts[1] + '</div><div class=day-of-month>' + dateParts[2] + '<span>' + getSuffix(dateParts[2]) + '</span></div></div> <div class="icon single"><div class="left symbol obj" style="background-position:' + getSymbolPosition(symbol, true, true) + '"> </div><div class="right symbol obj" > </div></div><div class=temp><label>temperature</label><span class=val><span class=' + howHot(min['temp']) + '>' + getTemp(min['temp']) + '</span> | <span class=' + howHot(max['temp']) + '>' + getTemp(max['temp']) + '</span></span></div><div class=wind><label>wind speed</label><span class=val><span class="' + howWindy(min['wind']) + '">' + getWind(min['wind']) + '</span> | <span class=' + howWindy(max['wind']) + '>' + getWind(max['wind']) + '</span></span></span></div><div class=precip><label>precipitation</label><span class=val>' + getPrecip(precip) + '</span></div></a>');
+						dayCount++;
+					}
+					min = {temp:99, wind:99}, max = {temp:-99, wind:-99}, symbolCounts = {}, precip = 0;
+					dateParts = hour.date.replace(',','').split(' ');
+				} else {
+					if(min['temp'] > hour.temp)
+						min['temp'] = hour.temp;
+					else if(max['temp'] < hour.temp)
+						max['temp'] = hour.temp;						
+					if(min['wind'] > hour.wind)
+						min['wind'] = hour.wind;
+					else if(max['wind'] < hour.wind)
+						max['wind'] = hour.wind;
+					if(symbolCounts[hour.symbolCode] == undefined)
+						symbolCounts[hour.symbolCode] = 1;
+					else
+						symbolCounts[hour.symbolCode] = symbolCounts[hour.symbolCode] + 1; 
+						 
+					precip += hour.precip;
+				}
+			}			
+		}
+		
+		function isWeeklyForecast() {
+			var i = window.location.href.indexOf('#');
+			if(i !== -1 && window.location.href.substr(i, i+WEEKLY.length) === WEEKLY)
+				return  true;
+			return false;
+		}
+		
 		function howHot(hour) {
-			if(hour.temp > 24)
+			var temp = hour.temp == undefined ? hour:hour.temp;
+			if(temp > 24)
 				return 'hot';
-			if(hour.temp <= 0)
+			if(temp <= 0)
 				return 'cold';
 			return '';
 		}
 		
 		function howWindy(hour) {
-			if(hour.wind >= 25)
+			var wind = hour.wind == undefined ? hour:hour.wind;
+			if(wind >= 25)
 				return 'strong';
-			if(hour.wind >= 15)
+			if(wind >= 10)
 				return 'moderate';			
 			return '';
 		}
 		
+		function getSuffix(int) {
+			int = int % 10 
+			if(int > 0 && int < 4)
+				return SUFFIXES[int-1];
+			return SUFFIXES[3];		
+		}
+		
+		function getSymbolPosition(symbolCode, sunUp, bigImages) {
+			if(bigImages == undefined || !bigImages)
+				return (-71.5 * (symbolCode - 1)) + (sunUp ? 'px -160px':'px -230px');
+			else
+				return (-71.5 * 1.5 * (symbolCode - 1)) + (sunUp ? 'px -240px':'px -345px');
+		}
+		
 		function getTemp(hour) {
+			var temp = hour.temp == undefined ? hour : hour.temp;
 			if(isCelsius()) 
-				return Math.round(hour.temp) + '\u2103';
+				return Math.round(temp) + '\u2103';
 			else 
-				return Math.round(1.8 * hour.temp + 32) + '\u2109';
+				return Math.round(1.8 * temp + 32) + '\u2109';
 		}
 		
 		function getWind(hour) {
+			var wind = hour.wind == undefined ? hour : hour.wind;
 			if(isMetric())
-				return Math.round(hour.wind * 3.6) + ' km/h';
+				return Math.round(wind * 1.6093) + ' km/h';
 			else
-				return Math.round(hour.wind) + ' mph';
+				return Math.round(wind) + ' mph';
 		}
 		
 		function getPrecip(hour) {
-			if(hour.precip == 0) return 'none';
+			var precip = hour.precip == undefined ? hour : hour.precip;
+			if(precip == 0) return 'none';
 			
-			var precip;
-			if(isMetric()) precip = formatDouble(hour.precip);
-			else precip = formatDouble(hour.precip * 0.03937);
+			if(isMetric()) precip = formatDouble(precip);
+			else precip = formatDouble(precip * 0.03937);
 			
 			if(precip === 0) return 'trace';
 			
@@ -525,8 +684,8 @@
 		function isCelsius() {return localStorage.getItem('celsius') === 'true';}
 		function isFirstVisit() {return  localStorage.getItem('metric') == null;}
 		
-		function updateUnitConfig() {
-			var setting = $(this).val();
+		function updateUnitConfig(element) {
+			var setting = $(element).val();
 			switch(setting)
 			{
 				case 'metric':
@@ -542,21 +701,6 @@
 					localStorage.setItem('celsius', false);
 					break;
 			}
-			
-			updateForecast();
-		}
-		
-		function updateForecast() {
-			var hourNodes = $('#forecast').children('.hour');
-			
-			var forecastHours = window.forecastData.forecastHours;
-			var forecastLength = forecastHours.length;
-				for(var i=0; i < forecastLength ; i += 1) {
-					var hour = forecastHours[i];
-					$(hourNodes[i]).find('.temp .val').html(getTemp(hour));
-					$(hourNodes[i]).find('.wind .val').html(getWind(hour));
-					$(hourNodes[i]).find('.precip .val').html(getPrecip(hour));
-				}
 		}
 		
 		function animateToDark(object) {
@@ -583,7 +727,7 @@
 		function performDropAnimation(forecastHour) {
 			//set the day/night states
 			if(!forecastHour.sunUp) {
-				$('.day').removeClass('day').addClass('night');
+				$('.hour.day').removeClass('day').addClass('night');
 				animateToDark($('#head'));
 			}
 			//position the sun/moon based on the forecast
@@ -619,10 +763,27 @@
 		
 		function setPermissionVisibility(visible) {
 			var permissionsDialog = $('#permissions_area');
-			if((visible == undefined || !visible) && !window.locationReturned)
+			if((visible == undefined || !visible) && !locationReturned)
 				permissionsDialog.animate({'top':'0'}); 
 			else
 				permissionsDialog.animate({'top':'-150px'}); 
+		}
+		
+		function getSelectedDay() {
+			var i = window.location.href.indexOf('?');
+			if(i == -1) return null;
+			else i+=1;
+			
+			if(window.location.href.substring(i, i+DAY.length) === DAY)
+				return window.location.href.substr(i+DAY.length+1);
+			return null;
+		}
+		
+		function scrollToDay() {
+			var day = getSelectedDay();
+			if(day != null)
+				$(window).scrollTop($('.anchor[day=\'' + day + '\']').offset().top);;
+				
 		}
 		
 		function setupStickyHeaders() {
@@ -652,9 +813,11 @@
 						break;
 						
 					if(!isStuck(header))
-						if(scrollTop >= header.orgOffset)
+						if(scrollTop >= header.orgOffset) {
 							header.element.css('width', orgCSS.width).css('position', 'fixed').css('top','0').before('<div class=day-start> </div>');
-						else if(i > 0)
+							if(i > 0)
+								headers[i-1].element.css('z-index', -1);
+						}else if(i > 0)
 							headers[i-1].element.css('top', header.orgOffset - scrollTop - parseInt(orgCSS.height));
 				}
 				
@@ -662,8 +825,11 @@
 				for(i in headers) {
 					var header = headers[i];
 					if(!isStuck(header)) break;
-					if(scrollTop <= header.orgOffset)
+					if(scrollTop <= header.orgOffset) {
 						header.element.css('position', orgCSS.position).css('top','').prev().remove();
+						if(i > 0)
+							headers[i-1].element.css('z-index', 1);
+					}
 				}
 			});
 			

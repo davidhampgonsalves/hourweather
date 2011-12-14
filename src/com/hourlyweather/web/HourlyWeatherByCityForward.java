@@ -20,8 +20,17 @@ public class HourlyWeatherByCityForward extends HttpServlet {
 	city = city.replaceAll("%20", " ");
 	request.setAttribute("city", city);
 	
+	Location location = CityLocationUtil.getLocation(city);
+	
+	if (location == null) 
+	    throw new LocationException(city + " wasn't found.");
+	
+	request.setAttribute("lat", location.getLat());
+	request.setAttribute("lon", location.getLon());
+	request.setAttribute("timeOffset", location.getTimeZone());
+	
 	RequestDispatcher dispatcher = getServletContext()
-		.getRequestDispatcher("/hourlyWeatherByCity.jsp");
+		.getRequestDispatcher("/");
 	dispatcher.forward(request, response);
     }
 }

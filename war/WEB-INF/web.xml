@@ -5,22 +5,23 @@
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	<servlet>
-		<servlet-name>HourlyWeatherByCity</servlet-name>
-		<servlet-class>com.hourlyweather.web.HourlyWeatherByCityForward</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>HourlyWeatherByLocation</servlet-name>
 		<servlet-class>com.hourlyweather.web.HourlyWeatherByLocationServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>HourlyWeatherByCity</servlet-name>
+		<servlet-class>com.hourlyweather.web.HourlyWeatherByCityForward</servlet-class>
+	</servlet>
 		
 	<servlet-mapping>
-		<servlet-name>HourlyWeatherByLocation</servlet-name>
-		<url-pattern>/HourlyWeatherByLocation</url-pattern>
+		<servlet-name>HourlyWeatherByCity</servlet-name>
+		<url-pattern>/forecast/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>HourlyWeatherByCity</servlet-name>
-		<url-pattern>/city/*</url-pattern>
+		<servlet-name>HourlyWeatherByLocation</servlet-name>
+		<url-pattern>/HourlyWeatherByLocation</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

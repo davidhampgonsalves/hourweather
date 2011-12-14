@@ -36,9 +36,9 @@ public class HourlyWeatherByLocationServlet extends HttpServlet {
 	    return;
 	}
 
-	// get the forecast
+	// get the forecast for a full week
 	HourlyForecast forecast = new HourlyForecast(lat,
-		lon, new DateTime(), 36, timezoneOffset);
+		lon, new DateTime(), 168, timezoneOffset);
 	
 	// get the forecast
 	ForecastFetcher.getHourlyForecast(forecast);
