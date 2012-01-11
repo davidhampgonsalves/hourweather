@@ -9,9 +9,9 @@ import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.google.appengine.repackaged.org.json.JSONArray;
-import com.google.appengine.repackaged.org.json.JSONException;
-import com.google.appengine.repackaged.org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import com.hourlyweather.forecast.ForecastHour;
 import com.hourlyweather.forecast.HourlyForecast;
 
@@ -19,7 +19,7 @@ public class HourlyForecastBuilder {
     private static final DateTimeFormatter dayFormatter = DateTimeFormat
 	    .forPattern("EEEE, MMMM dd");
     private static final DateTimeFormatter hourFormatter = DateTimeFormat
-	    .forPattern("hh:00 aa");
+	    .forPattern("HH");
 
     private static final DecimalFormat windSpeedFormat = new DecimalFormat(
 	    "#.#");

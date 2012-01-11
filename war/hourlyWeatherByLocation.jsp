@@ -7,7 +7,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
   	<meta name="apple-mobile-web-app-capable" content="yes" /> 
-	<title> Hour Weather is your location based, dead easy, weather forecasting app</title>	
+	<title> Hour Weather - location aware weather forecasting thats dead easy</title>	
 	<script type="application/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAtBXrBPeu06XUpudOXcQOuxRX2HH5zuNNjZghGMsxwI9-Ikp8AhSUmG3y0tErgw-y4DIX6YIBfiIDCw"></script>
 	<script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 	<script type="application/javascript">
@@ -31,7 +31,7 @@
 			color:#333;
 		}
 		
-		a {color: #333;}
+		a {color: #333;text-decoration:none}
 		
 		h2 {
 			font-size:15px;
@@ -125,11 +125,16 @@
 		
 		.day-start {
 			background:#d8f6ea;
-			line-height: 80px;
-			height: 80px;
+			line-height: 60px;
+			height: 60px;
 			padding-left:20px;
 			font-size:20px;
 		}
+		
+		.unimportant {color: #777}
+		
+		.arrow_nav {font-size: 35px}
+		.arrow_nav:hover {color:#999}
 		
 		#links {
 			float:right;
@@ -138,60 +143,67 @@
 		}
 		
 		#links a {
-			text-decoration:none;
 			background: white;
 			border-radius: 5px;
+			border:3px solid #eaf1ff;
 			padding:5px;
 		}
 		
 		#links a:hover {
+			border:0;
 			padding:8px;
 		}
 		
 		#links a.selected {
+			border:0;
 			padding:8px;
+			background: #FFFFBE
+		}
+		
+		.row {
+			background:rgb(250,250,250);
+			overflow:auto;
+			border-bottom: 2px solid #E6E6E6;
 		}
 		
 		#forecast .day {
 			display:block;
 			color:#333;
-			height:150px;
-			text-decoration:none;
+			padding:20px 0;
+			overflow:hidden;
 		}
-		#forecast .day:hover {background:#E7CCB2;}
-
-		.day .date {
-			float:left;
-			width: 150px;
-		}
-
-		#forecast .day div {text-align:center; width: 166px; float:left}
-		.day .date {padding-top: 30px;}
+		.day:hover {background:#eaf1ff}
+		#forecast .day div {text-align:center;float:left}
+		
+		.day .date {padding-top: 10px;width:180px;}
+		.day .date div {width:166px}
 		.day .date .day-of-week {font-size: 25px;}
 		.day .date .month {font-size: 16px;}
 		.day .date .day-of-month {font-size: 40px;}
 		.day .date .day-of-month span {font-size: 12px;}
 
-		#forecast .day .icon.single .symbol {height: 105px;width:105px;margin-top:10px;background-size: 1629px 445px;}
-		.day .icon.single .symbol.right {display:none}
+		.symbols div {height:95px;width:78px;background-size: 1629px 445px;margin-top:0px}
+		.symbols div div {margin-top: 95px;}
+		.symbols ._2, .symbols ._3 {border-left:3px solid #999} 
+		
+		.symbols._1 div.obj {margin-left:70px}
+		.symbols._1 ._1 {width:105px}
+		.symbols._1 ._1 div {margin-left:10px}
+		.symbols._1 ._2, .symbols._1 ._2 {display:none}
 
-		.day .icon.double .symbol.left {width:75px;}
-		.day .icon.double .symbol.right {width:75px;}
+		.symbols._2 div.obj._1 {margin-left:30px}
+		.symbols._2 ._1, .symbols._2 ._2 {width:90px}
+		.symbols._2 ._3 {display:none}
 
-		#forecast .day div.wind {width: 250px}
-		#forecast .day div.temp {width: 250px} 
-		#forecast .day div.precip {}
-		.day label {display:block; padding-top: 40px;}
+		.day div.symbols {width:240px;} 		
+		.day div.wind {width: 240px}
+		.day div.temp {width: 170px}
+		.day div.precip {width: 140px} 
+		.day label {display:block; padding-top: 20px;}
 		.day .val {font-size: 25px; padding-top: 20px; display:block}
 		
 		.hour {
 			padding:5px 0;
-		}
-
-		.row {
-			background:rgb(250,250,250);
-			overflow:auto;
-			border-bottom: 2px solid rgb(230,230,230);
 		}
 		
 		.hour.alt {background: #dcefff}
@@ -243,9 +255,10 @@
 			font-size: 18px;
 			border-radius: 8px;
 			padding: 30px;
-			width:630px;
+			width:750px;
 			margin: 0 auto;
 			margin-top:50px;
+			text-align:center;
 		}
 		
 		.important {
@@ -303,8 +316,57 @@
 		
 		#weather-1 {left:0;}
 		#weather-2 {left:900px;}
+
+		.arrow {
+			border: 20px solid transparent;
+			border-bottom: 20px solid #afcdf3;
+			width: 0;
+			margin-top: -20px;
+			margin-left: 230px;
+		}
 		
-		#permissions_area {
+		.arrow-bottom {
+			border: 20px solid transparent;
+			border-top: 20px solid #afcdf3;
+			width: 0;
+			margin-left:230px;
+		}
+
+		.msg {	
+			border: 10px solid #afcdf3;
+			background:white;
+			padding: 10px;
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			border-radius: 10px;
+		}
+
+		#cities {
+			margin-top:40px;
+		}
+		
+		#cities div {
+			float:left;
+			margin-top:8px;
+			font-size: 13px;
+			font-weight:700
+		}
+		
+		#cities a {
+			margin-top:5px;
+			font-size:12px;
+			background:white;
+			border-radius:5px;
+			padding:5px;
+			display:block;
+			float:left;
+			margin: 3px;
+		}
+		#cities a:hover {background: #ddd}
+		#cities a:nth-child(odd):hover {background: #ddd}
+		#cities a:nth-child(odd) {background: #eee}
+		
+		#permissions_dialogue {
 			width:300px;
 			margin:0 auto;
 			display: block;
@@ -313,22 +375,12 @@
 			top:-150px;
 			z-index: 3;
 		}
-
-		#arrow {
-			border: 20px solid transparent;
-			border-bottom: 20px solid #afcdf3;
-			width: 0;
-			margin-top: -20px;
-			margin-left: 230px;
-		}
-
-		#permissions_msg {	
-			border: 10px solid #afcdf3;
-			background:white;
-			padding: 10px;
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
-			border-radius: 10px;
+		
+		#weekly-instructions-dialogue {
+			width:300px;
+			position:absolute;
+			top:-40px;
+			margin-left:30px;
 		}
 		
 		.loading {
@@ -381,10 +433,10 @@
 </head>
 	<body>
 <div id=head>
-		<div id='permissions_area'>
-			<div id='arrow'> </div>
-			<div id='permissions_msg'>
-				Share your location and we'll build an awesome hourly weather forecast just for you!
+		<div id=permissions_dialogue>
+			<div class=arrow> </div>
+			<div class=msg>
+				Share your location with us and we'll build an awesome hourly weather forecast just for you!
 			</div>
 		</div>
 		<div id=diorama>	
@@ -413,15 +465,43 @@
 			</div>
 		</div>
 		<div id=clouds> </div>
+		<a name=top></a>
 	</div>
 	<div id=body>
-		<a name=top></a>
 		<div id=forecast class=content>
 			<div id=marketing-blurb>
 				<div class=important>	
 				Hassle free forecasting based on your location!
 				</div>    
-				Wherever you are Hour Weather takes the hassle out of checking the forecast by figuring out the nearest weather station automatically. Stop bookmarking local weather forecasts and let Hour Weather simplify your day.
+				Wherever you are Hour Weather takes the hassle out of checking your forecast!
+				<br>
+				Using location aware technology we can generate a super accurate forecast just for you. 
+				<br><br>
+				Stop bookmarking local weather forecasts and let Hour Weather simplify your day.
+				
+				
+				<div id=cities>
+					<div>Hour Weather reports on over 30000 cities:</div>
+					<a href='/forecast/new_york?id=5128581'>new york</a>
+					<a href='/forecast/san_francisco?id=5391959'>san francisco</a>
+					<a href='/forecast/seattle?id=5809844'>seattle</a>
+					<a href='/forecast/los_angeles?id=5368361'>los angeles</a>
+					<a href='/forecast/philadelphia?id=4560349'>philadelphia</a>
+					<a href='/forecast/chicago?id=4887398'>chicago</a>
+					<a href='/forecast/toronto?id=6167865'>toronto</a>
+					<a href='/forecast/calgary?id=5913490'>calgary</a>
+					<a href='/forecast/montreal?id=6077243'>montreal</a>
+					<a href='/forecast/halifax?id=6324729'>halifax</a>
+					<a href='/forecast/london?id=2643743'>london</a>
+					<a href='/forecast/beijing?id=1816670'>beijing</a>
+					<a href='/forecast/moscow?id=524901'>moscow</a>
+					<a href='/forecast/mumbai?id=1275339'>mumbai</a>
+					<a href='/forecast/tokyo?id=1850147'>tokyo</a>
+					<a href='/forecast/hong_kong?id=1819729'>hong kong</a>
+					<a href='/forecast/cairo?id=360630'>cairo</a>
+					<a href='/forecast/cape_town?id=3369157'>cape town</a>
+					<a href='/forecast/hyderabad?id=1269843'>hyderabad</a>
+				</div>
 			</div>
 		</div>
 					
@@ -473,7 +553,11 @@
 
 		var DAY = 'day';
 		var WEEKLY = '#weekly';
+		var HOURLY = '#hourly';
 		var SUFFIXES = ['st', 'nd', 'rd', 'th'];
+		var MORNING ='morning', NOON = 'noon', EVENING='evening';
+		var SYMBOL_KEYS = [MORNING, NOON, EVENING];
+		
 	
 		var locationReturned = false;
 		if (typeof(localStorage) == 'undefined') 
@@ -481,6 +565,7 @@
 		else if(isFirstVisit()) {
 			localStorage.setItem('celsius', true);
 			localStorage.setItem('metric', true);
+			localStorage.setItem('24hourclock', true);
 		}
 		
 		jQuery.easing.def = "easeOutBounce";
@@ -506,11 +591,14 @@
 			else
 				var position = {city: positionData.city, lat: positionData.lat, lon: positionData.lon, timeOffset: positionData.timeOffset};
 				
-			
+			//get forecast
 			$.getJSON("/HourlyWeatherByLocation", {lat: position.lat, long: position.lon, timezoneOffset: position.timeOffset}, function(json) {displayForecast(json, position);}).error(showError);
+			
+			//reverse geolocate the user to display human readable location
+			getReadableLocation(position);
 		}
 		
-		function displayForecast(forecast, position) {
+		function displayForecast(forecast, position, shouldAnimate) {
 			
 			//make sure the dom is ready
 			$().ready(function() {
@@ -518,14 +606,15 @@
 					alert(forecast.error);		
 				
 				//set the day/night status + set the position
-				animateDiorama(forecast.forecastHours[0]);
+				if(shouldAnimate == undefined || shouldAnimate)
+					animateDiorama(forecast.forecastHours[0]);
 				
 				var forecastArea = $('#forecast');
 				forecastArea.html('');
 				displayLinks(forecastArea);
 				
 				$(window).off('hashchange');
-				$(window).on('hashchange', function() {displayForecast(forecast, position);});
+				$(window).on('hashchange', function() {displayForecast(forecast, position, false);});
 				
 				if(isWeeklyForecast())
 					displayWeekly(forecastArea, forecast.forecastHours, position);
@@ -548,7 +637,7 @@
 		}
 		
 		function displayLinks(forecastArea) {
-			forecastArea.append('<div id=links><a href=#hourly' + (!isWeeklyForecast() ? ' class=selected':'') + '>hourly</a> <a href=#weekly' + (isWeeklyForecast() ? ' class=selected':'') + '>weekly</a></div>');
+			forecastArea.append('<div id=links><a href=#hourly' + (!isWeeklyForecast() ? ' class=selected':'') + ' title="view your forecast hour by hour">hourly</a> <a href=#weekly' + (isWeeklyForecast() ? ' class=selected':'') + ' title="view your forecast day by day">weekly</a></div>');
 		}
 
 		
@@ -558,61 +647,78 @@
 				for(var i=0; i < forecastLength ; i += 1) {
 					var hour = forecastHours[i];
 					if(hour.date != undefined) {
-						forecastArea.append('<div class=anchor day=' + dayCount + '></div>');
+						forecastArea.append('<a name=' + dayCount + ' day=' + dayCount + '></a>');
 						if(i == 0)
-							forecastArea.append('<div class=day-start>' + hour.date + ' @ ' + (position.city === undefined ? '' : position.city) + ' <a href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>(' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
-						else
-							forecastArea.append('<div class=day-start>' + hour.date + '<div class=controls><a href=#top>back to top &uarr;</a></div></div>');
+							forecastArea.append('<div class=day-start>' + hour.date + ' @ <a id=location href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>'  + (position.city === undefined ? '' : position.city) + ' (' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
+						else {
+							var header = '<div class=day-start>' + hour.date + '<div class=controls>';
+							if(i < forecastLength - 24)
+								header += '<a class=arrow_nav href=#' + (dayCount+1) + ' title="jump ahead one day of your forecast"> &darr; </a> ';
+							header += '<a class=arrow_nav href=#top title="jump to the start of your forecast"> &uarr; </a></div></div>';
+							forecastArea.append(header);
+						}
 						dayCount++;
 					}
 					//add the forecast data to the forecast area
-					forecastArea.append('<div class=\'hour row ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + hour.hour + '</div> <div class=\'symbol obj\' style=\'background-position:' + getSymbolPosition(hour.symbolCode, hour.sunUp) + '\'></div> <div class=\'temp ' + howHot(hour) + '\'><label>temperature: </label><span class=val>' + getTemp(hour) + '</span></div> <div class=\'wind ' + howWindy(hour) + '\'><label>wind speed: </label><span class=val>' + getWind(hour) + '</span></div> <div class=precip><label>precipitation: </label><span class=val>' + getPrecip(hour) + '</span></div> </div>');
+					forecastArea.append('<div class=\'hour row ' + (hour.sunUp ? '':'night ') + (i % 2 == 0 ? '':'alt') + '\'> <div class=time>' + getTime(hour) + '</div> <div class=\'symbol obj\' style=\'background-position:' + getSymbolPosition(hour.symbolCode, {isSunUp: hour.sunUp}) + '\'></div> <div class=\'temp ' + howHot(hour) + '\'><label>temperature: </label><span class=val>' + getTemp(hour) + '</span></div> <div class=\'wind ' + howWindy(hour) + '\'><label>wind speed: </label><span class=val>' + getWind(hour) + '</span></div> <div class=precip><label>precipitation: </label><span class=val>' + getPrecip(hour) + '</span></div> </div>');
 				}
 		}
 		
 		function displayWeekly(forecastArea, forecastHours, position) {
-			forecastArea.append('<div class=day-start>weekly forecast @ ' + (position.city === undefined ? '' : position.city) + ' <a href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>(' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
+			if(isFirstUsageOfWeekly()) {
+				forecastArea.append('<div id=weekly-instructions-dialogue><div class=msg>Click on a day to see the hourly details you need!</div><div class=arrow-bottom></div></div>');
+				weeklyForecastUsed();
+			}	
+			forecastArea.append('<div class=day-start>weekly forecast @ <a href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>' + (position.city === undefined ? '' : position.city) + ' (' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
 			var forecastLength = forecastHours.length;
-			var precip, min, max, dateParts, symbolCounts, dayCount=0;
+			var precip, wind, temp, dateParts, symbols, dayCount=0;
 			for(var i=0; i < forecastLength ; i += 1) {
-				var hour = forecastHours[i];
-				if(hour.date != undefined) {
+				var h = forecastHours[i];
+				if(h.date != undefined) {
 					if(i != 0) {
-						var symbolCount = 0, symbol, symbol2;
-						for(s in symbolCounts)
-							if(symbolCounts[s] > symbolCount) {
-								symbol2 = symbol;
-								symbol = s;
-							}
-						forecastArea.append('<a class="day row" href=#hourly?day=' + dayCount + '><div class=date><div class=day-of-week>' + dateParts[0] + '</div><div class=month>' + dateParts[1] + '</div><div class=day-of-month>' + dateParts[2] + '<span>' + getSuffix(dateParts[2]) + '</span></div></div> <div class="icon single"><div class="left symbol obj" style="background-position:' + getSymbolPosition(symbol, true, true) + '"> </div><div class="right symbol obj" > </div></div><div class=temp><label>temperature</label><span class=val><span class=' + howHot(min['temp']) + '>' + getTemp(min['temp']) + '</span> | <span class=' + howHot(max['temp']) + '>' + getTemp(max['temp']) + '</span></span></div><div class=wind><label>wind speed</label><span class=val><span class="' + howWindy(min['wind']) + '">' + getWind(min['wind']) + '</span> | <span class=' + howWindy(max['wind']) + '>' + getWind(max['wind']) + '</span></span></span></div><div class=precip><label>precipitation</label><span class=val>' + getPrecip(precip) + '</span></div></a>');
+						forecastArea.append('<a class="day row" href=#hourly?day=' + dayCount + '><div class=date><div class=day-of-week>' + dateParts[0] + '</div><div class=month>' + dateParts[1] + '</div><div class=day-of-month>' + dateParts[2] + '<span>' + getSuffix(dateParts[2]) + '</span></div></div>' + getSymbolArea(symbols) + '<div class=temp><label>temperature</label><span class=val><span class=' + howHot(temp.min) + '>' + getTemp(temp.min) + '</span><span class=unimportant> &#8226; </span><span class=' + howHot(temp.max) + '>' + getTemp(temp.max) + '</span></span></div><div class=wind><label>wind speed</label><span class=val><span class="' + howWindy(wind.min) + '">' + getWind(wind.min) + '</span><span class=unimportant> &#8226; </span><span class=' + howWindy(wind.max) + '>' + getWind(wind.max) + '</span></span></span></div><div class=precip><label>precipitation</label><span class=val>' + getPrecip(precip) + '</span></div></a>');
 						dayCount++;
 					}
-					min = {temp:99, wind:99}, max = {temp:-99, wind:-99}, symbolCounts = {}, precip = 0;
-					dateParts = hour.date.replace(',','').split(' ');
+					symbols = {}, wind = {min: 99, max:-1}, temp = {min:99, max:-99}, precip = 0;
+					dateParts = h.date.replace(',','').split(' ');
 				} else {
-					if(min['temp'] > hour.temp)
-						min['temp'] = hour.temp;
-					else if(max['temp'] < hour.temp)
-						max['temp'] = hour.temp;						
-					if(min['wind'] > hour.wind)
-						min['wind'] = hour.wind;
-					else if(max['wind'] < hour.wind)
-						max['wind'] = hour.wind;
-					if(symbolCounts[hour.symbolCode] == undefined)
-						symbolCounts[hour.symbolCode] = 1;
-					else
-						symbolCounts[hour.symbolCode] = symbolCounts[hour.symbolCode] + 1; 
+					if(temp.min > h.temp)
+						temp.min = h.temp;
+					else if(temp.max < h.temp)
+						temp.max = h.temp;						
+					if(wind.min > h.wind)
+						wind.min = h.wind;
+					else if(wind.max < h.wind)
+						wind.max = h.wind;
+					
+					var field = null;
+					if(h.hour > 5 && h.hour < 11) 
+						 field = MORNING;
+					else if(h.hour > 10 && h.hour < 16)
+						field = NOON;
+					else if(h.hour > 15)
+						field = EVENING;
+
+					if(field != null)
+						if(symbols[field] == undefined || symbols[field] < h.symbolCode)
+							symbols[field] = h.symbolCode;
 						 
-					precip += hour.precip;
+					precip += h.precip;
 				}
 			}			
 		}
 		
-		function isWeeklyForecast() {
-			var i = window.location.href.indexOf('#');
-			if(i !== -1 && window.location.href.substr(i, i+WEEKLY.length) === WEEKLY)
-				return  true;
-			return false;
+		function getReadableLocation(position) {
+			 $.getJSON('http://api.geonames.org/findNearbyJSON?formatted=false&lat=' + position.lat + '&lng=' + position.lon + '&fclass=P&fcode=PPLA&fcode=PPL&fcode=PPLC&username=davidhampgonsalves&style=SHORT&callback=?', 
+			 	function(data) {
+			 		if(data.geonames.length > 0) {
+			 			position.city = data.geonames[0].name;
+			 			//handle case where reverse geo comes back after forecast
+						var location = $('#location');
+		 				if(location.length > 0)
+		 					location.html(position.city + ' ' + location.html());
+			 		}
+				});
 		}
 		
 		function howHot(hour) {
@@ -639,12 +745,36 @@
 				return SUFFIXES[int-1];
 			return SUFFIXES[3];		
 		}
+
+		function getSymbolPosition(symbolCode, options) {
+			var sunUp = options['isSunUp'] != undefined && options['isSunUp'];
+			var bigImages = options['isBigImages'] != undefined && options['isBigImages'];
+			var offset = options['offset'] == undefined ? 0:options['offset'];
+
+			return (-71.5 * (bigImages? 1.5:1) * (symbolCode - 1) - offset) + 'px ' + ((bigImages? 1.5:1) * (sunUp ? -160:-230)) + 'px';
+				
+		}
 		
-		function getSymbolPosition(symbolCode, sunUp, bigImages) {
-			if(bigImages == undefined || !bigImages)
-				return (-71.5 * (symbolCode - 1)) + (sunUp ? 'px -160px':'px -230px');
-			else
-				return (-71.5 * 1.5 * (symbolCode - 1)) + (sunUp ? 'px -240px':'px -345px');
+		function getSymbolArea(symbols) {
+		 	var symbolsHtml='', symbolCount = 0;
+		 	var offsets = [0,12,25];
+		 	
+	 		for(var i=0 ; i < SYMBOL_KEYS.length ; i++)
+	 			if(symbols[SYMBOL_KEYS[i]] != undefined) {
+	 				symbolsHtml += '<div class="obj _' + (symbolCount + 1) + '" style="background-position:' + getSymbolPosition(symbols[SYMBOL_KEYS[i]], {isSunUp: true, isBigImages:true, offset:offsets[symbolCount]}) + '"><div>' + SYMBOL_KEYS[i] + '</div></div>';
+	 				symbolCount++;
+		 		}
+		 	return '<div class="symbols _' + symbolCount + '">' + symbolsHtml + '</div>';
+		}
+	
+		function getTime(hour) {
+			if(is24Hour())
+				return hour.hour + ':00';
+			else {
+				var h = hour.hour > 12 ? hour.hour - 12 : hour.hour;
+				return (h==0 ? 12:h) + ':00 ' + (hour.hour < 13 ? 'AM':'PM');
+			}
+			
 		}
 		
 		function getTemp(hour) {
@@ -680,9 +810,18 @@
 			return Math.round(double * 100) / 100;
 		}
 		
+		function is24Hour() {return localStorage.getItem('24hourclock') === 'true';}
 		function isMetric() {return localStorage.getItem('metric') === 'true';}
 		function isCelsius() {return localStorage.getItem('celsius') === 'true';}
+		function isWeeklyForecast() {
+			var i = window.location.href.indexOf('#');
+			if(i !== -1 && window.location.href.substr(i, i+HOURLY.length) === HOURLY)
+				return  false;
+			return true;
+		}
 		function isFirstVisit() {return  localStorage.getItem('metric') == null;}
+		function isFirstUsageOfWeekly() {return localStorage.getItem('first-use-of-weekly') == null;}
+		function weeklyForecastUsed() {return localStorage.setItem('first-use-of-weekly', 'false');}
 		
 		function updateUnitConfig(element) {
 			var setting = $(element).val();
@@ -760,9 +899,8 @@
 			  alert("Sorry, we were unable to detect your location because: " + errors[error.code]);
 		}
 		
-		
 		function setPermissionVisibility(visible) {
-			var permissionsDialog = $('#permissions_area');
+			var permissionsDialog = $('#permissions_dialogue');
 			if((visible == undefined || !visible) && !locationReturned)
 				permissionsDialog.animate({'top':'0'}); 
 			else
@@ -782,7 +920,7 @@
 		function scrollToDay() {
 			var day = getSelectedDay();
 			if(day != null)
-				$(window).scrollTop($('.anchor[day=\'' + day + '\']').offset().top);;
+				$(window).scrollTop($('a[day=\'' + day + '\']').offset().top);;
 				
 		}
 		
@@ -802,6 +940,20 @@
 			//handle scrolling
 			$(window).scroll(function(){
 				var scrollTop = $(this).scrollTop();
+				
+								
+				//unstick headers
+				for(i in headers) {
+					var header = headers[i];
+					if(!isStuck(header)) break;
+					
+					if(scrollTop < header.orgOffset) {
+						header.element.css('position', orgCSS.position).css('top','').prev().remove();
+						if(i > 0)
+							headers[i-1].element.css('z-index', 1);
+					}
+				}
+				
 				//stick headers
 				for(i in headers) {
 					var header = headers[i];
@@ -812,23 +964,14 @@
 					if(scrollTop < header.orgOffset - parseInt(orgCSS.height)) 
 						break;
 						
-					if(!isStuck(header))
-						if(scrollTop >= header.orgOffset) {
+					if(!isStuck(header)) {
+						if(scrollTop > header.orgOffset) {
 							header.element.css('width', orgCSS.width).css('position', 'fixed').css('top','0').before('<div class=day-start> </div>');
 							if(i > 0)
 								headers[i-1].element.css('z-index', -1);
 						}else if(i > 0)
+							//hide the element 
 							headers[i-1].element.css('top', header.orgOffset - scrollTop - parseInt(orgCSS.height));
-				}
-				
-				//unstick headers
-				for(i in headers) {
-					var header = headers[i];
-					if(!isStuck(header)) break;
-					if(scrollTop <= header.orgOffset) {
-						header.element.css('position', orgCSS.position).css('top','').prev().remove();
-						if(i > 0)
-							headers[i-1].element.css('z-index', 1);
 					}
 				}
 			});
