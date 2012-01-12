@@ -20,6 +20,10 @@ public class HourlyWeatherByCityForward extends HttpServlet {
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	
+	//not finished, regex for getting ending?
+	/*int start = request.getRequestURI().lastIndexOf('/');
+	int end = request.getRequestURI().indexOf('#'); 
+	String cityName = request.getRequestURI().substring(start, end);*/
 	Key cityKey = KeyFactory.createKey(City.ENTITY, request.getParameter("id"));
 
 	//query database for city geo data

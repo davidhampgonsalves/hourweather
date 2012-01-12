@@ -160,6 +160,23 @@
 			background: #FFFFBE
 		}
 		
+		#city-info {
+			margin-top:-80px;
+			margin-bottom: 100px;
+			padding-left: 15px;
+			overflow:auto;
+			border-radius: 10px;
+			background:white;
+			padding:15px;
+			width:900px;
+		}
+		
+		#city-info h1 {
+			font-size: 15px;
+		}
+		
+		#city-info a {text-decoration: underline;}
+		
 		.row {
 			background:rgb(250,250,250);
 			overflow:auto;
@@ -172,7 +189,7 @@
 			padding:20px 0;
 			overflow:hidden;
 		}
-		.day:hover {background:#eaf1ff}
+		a.day:hover {background:#eaf1ff}
 		#forecast .day div {text-align:center;float:left}
 		
 		.day .date {padding-top: 10px;width:180px;}
@@ -322,7 +339,7 @@
 			border-bottom: 20px solid #afcdf3;
 			width: 0;
 			margin-top: -20px;
-			margin-left: 230px;
+			margin-left: 30px;
 		}
 		
 		.arrow-bottom {
@@ -367,11 +384,12 @@
 		#cities a:nth-child(odd) {background: #eee}
 		
 		#permissions_dialogue {
-			width:300px;
+			width:350px;
 			margin:0 auto;
 			display: block;
 			position:absolute;
-			right:20px;
+			text-align:center;
+			left:50px;
 			top:-150px;
 			z-index: 3;
 		}
@@ -432,11 +450,11 @@
 	</style>
 </head>
 	<body>
-<div id=head>
+		<div id=head>
 		<div id=permissions_dialogue>
 			<div class=arrow> </div>
 			<div class=msg>
-				Share your location with us and we'll build an awesome hourly weather forecast just for you!
+				Share your location with us! <br>We'll build you an awesome weather forecast!
 			</div>
 		</div>
 		<div id=diorama>	
@@ -468,6 +486,9 @@
 		<a name=top></a>
 	</div>
 	<div id=body>
+		<% if(request.getAttribute("city") != null) { %>
+		<div id=city-info class=content><h1>Weekly Weather Forecast for <%= request.getAttribute("city") %></h1> Hour weather always gives you a super accurate forecast of the weather in your future.  It uses the yr.no weather forecasting service to create a forecast just for you.  In this case its for <%= request.getAttribute("city") %> but we can create one just for you just as quick.  Simply pop on over to our <a href='/'>main page</a> to check the weather forecast for your current location, no matter where your hiding.</div>
+		<% } %>
 		<div id=forecast class=content>
 			<div id=marketing-blurb>
 				<div class=important>	
@@ -595,7 +616,8 @@
 			$.getJSON("/HourlyWeatherByLocation", {lat: position.lat, long: position.lon, timezoneOffset: position.timeOffset}, function(json) {displayForecast(json, position);}).error(showError);
 			
 			//reverse geolocate the user to display human readable location
-			getReadableLocation(position);
+			if(position.city === undefined)
+				getReadableLocation(position);
 		}
 		
 		function displayForecast(forecast, position, shouldAnimate) {
@@ -625,7 +647,7 @@
 				var controls = $('.controls');
 				controls.find('select').change(function() {
 					updateUnitConfig(this);
-					displayForecast(forecast, position);
+					displayForecast(forecast, position, false);
 				});
 				controls.find('#temp-units').val(isCelsius() ? 'celsius':'fahrenheit');
 				controls.find('#units').val(isMetric() ? 'metric':'imperial');
@@ -669,7 +691,7 @@
 				forecastArea.append('<div id=weekly-instructions-dialogue><div class=msg>Click on a day to see the hourly details you need!</div><div class=arrow-bottom></div></div>');
 				weeklyForecastUsed();
 			}	
-			forecastArea.append('<div class=day-start>weekly forecast @ <a href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>' + (position.city === undefined ? '' : position.city) + ' (' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
+			forecastArea.append('<div class=day-start>weekly forecast @ <a id=location href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>' + (position.city === undefined ? '' : position.city) + ' (' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
 			var forecastLength = forecastHours.length;
 			var precip, wind, temp, dateParts, symbols, dayCount=0;
 			for(var i=0; i < forecastLength ; i += 1) {
@@ -681,30 +703,30 @@
 					}
 					symbols = {}, wind = {min: 99, max:-1}, temp = {min:99, max:-99}, precip = 0;
 					dateParts = h.date.replace(',','').split(' ');
-				} else {
-					if(temp.min > h.temp)
-						temp.min = h.temp;
-					else if(temp.max < h.temp)
-						temp.max = h.temp;						
-					if(wind.min > h.wind)
-						wind.min = h.wind;
-					else if(wind.max < h.wind)
-						wind.max = h.wind;
-					
-					var field = null;
-					if(h.hour > 5 && h.hour < 11) 
-						 field = MORNING;
-					else if(h.hour > 10 && h.hour < 16)
-						field = NOON;
-					else if(h.hour > 15)
-						field = EVENING;
-
-					if(field != null)
-						if(symbols[field] == undefined || symbols[field] < h.symbolCode)
-							symbols[field] = h.symbolCode;
-						 
-					precip += h.precip;
 				}
+				
+				if(temp.min > h.temp)
+					temp.min = h.temp;
+				if(temp.max < h.temp)
+					temp.max = h.temp;						
+				if(wind.min > h.wind)
+					wind.min = h.wind;
+				if(wind.max < h.wind)
+					wind.max = h.wind;
+				
+				var field = null;
+				if(h.hour > 5 && h.hour < 11) 
+					 field = MORNING;
+				else if(h.hour > 10 && h.hour < 16)
+					field = NOON;
+				else if(h.hour > 15)
+					field = EVENING;
+
+				if(field != null)
+					if(symbols[field] == undefined || symbols[field] < h.symbolCode)
+						symbols[field] = h.symbolCode;
+					 
+				precip += h.precip;
 			}			
 		}
 		
@@ -815,9 +837,9 @@
 		function isCelsius() {return localStorage.getItem('celsius') === 'true';}
 		function isWeeklyForecast() {
 			var i = window.location.href.indexOf('#');
-			if(i !== -1 && window.location.href.substr(i, i+HOURLY.length) === HOURLY)
-				return  false;
-			return true;
+			if(i === -1 || window.location.href.substr(i, WEEKLY.length) === WEEKLY)
+				return true;
+			return false;
 		}
 		function isFirstVisit() {return  localStorage.getItem('metric') == null;}
 		function isFirstUsageOfWeekly() {return localStorage.getItem('first-use-of-weekly') == null;}
@@ -866,12 +888,12 @@
 		function performDropAnimation(forecastHour) {
 			//set the day/night states
 			if(!forecastHour.sunUp) {
-				$('.hour.day').removeClass('day').addClass('night');
+				$('.hanging-obj.day').removeClass('day').addClass('night');
 				animateToDark($('#head'));
 			}
 			//position the sun/moon based on the forecast
-			$('#day-night').animate({'top': -193 + (forecastHour.symbolCode > 5? (16 * forecastHour.symbolCode - 1):0) + 'px'}, 2500);
-			$('#day-night-sm').animate({'top':-160 + (9 * forecastHour.symbolCode - 1) + 'px'}, 3000);
+			$('#day-night').animate({'top': -193 + (forecastHour.symbolCode > 5 ? (16 * forecastHour.symbolCode - 1):0) + 'px'}, 2500);
+			$('#day-night-sm').animate({'top': -160 + (9 * forecastHour.symbolCode - 1) + 'px'}, 3000);
 			
 			//change the state of the weather icons
 			//avoid using icons with sun/moons
@@ -908,20 +930,16 @@
 		}
 		
 		function getSelectedDay() {
-			var i = window.location.href.indexOf('?');
+			var i = window.location.href.indexOf(DAY + '=');
 			if(i == -1) return null;
-			else i+=1;
-			
-			if(window.location.href.substring(i, i+DAY.length) === DAY)
-				return window.location.href.substr(i+DAY.length+1);
-			return null;
+			i = i + DAY.length + 1;
+			return window.location.href.substr(i, i + 1);
 		}
 		
 		function scrollToDay() {
 			var day = getSelectedDay();
 			if(day != null)
-				$(window).scrollTop($('a[day=\'' + day + '\']').offset().top);;
-				
+				$(window).scrollTop($('a[day=\'' + day + '\']').offset().top);
 		}
 		
 		function setupStickyHeaders() {
