@@ -334,18 +334,47 @@
 		#weather-1 {left:0;}
 		#weather-2 {left:900px;}
 
-		.arrow {
+		
+		#location-permissions {
+			left:50px;
+			top: -150px;
+			z-index: 3;
+		}
+		
+		#location-permissions.ie {
+			left:50%;
+			top:auto;
+			z-index: 3;
+		}
+		
+		#weekly-instructions {
+			position:absolute;
+			top:-60px;
+			margin-left:30px;
+		}
+		
+		.dialogue {
+			width:350px;
+			display: block;
+			text-align:center;
+			position:fixed;
+		}
+		
+		.dialogue.up:before, .dialogue.down:after {
 			border: 20px solid transparent;
-			border-bottom: 20px solid #afcdf3;
 			width: 0;
+			position:absolute;
+			content:'';
+			display:block;
+		}
+		.dialogue.up:before {			
+			border-bottom: 20px solid #afcdf3;
 			margin-top: -20px;
 			margin-left: 30px;
 		}
 		
-		.arrow-bottom {
-			border: 20px solid transparent;
+		.dialogue.down:after {
 			border-top: 20px solid #afcdf3;
-			width: 0;
 			margin-left:230px;
 		}
 
@@ -353,9 +382,8 @@
 			border: 10px solid #afcdf3;
 			background:white;
 			padding: 10px;
-			-moz-border-radius: 10px;
-			-webkit-border-radius: 10px;
 			border-radius: 10px;
+			margin-top:20px;
 		}
 
 		#cities {
@@ -382,24 +410,6 @@
 		#cities a:hover {background: #ddd}
 		#cities a:nth-child(odd):hover {background: #ddd}
 		#cities a:nth-child(odd) {background: #eee}
-		
-		#permissions_dialogue {
-			width:350px;
-			margin:0 auto;
-			display: block;
-			position:absolute;
-			text-align:center;
-			left:50px;
-			top:-150px;
-			z-index: 3;
-		}
-		
-		#weekly-instructions-dialogue {
-			width:300px;
-			position:absolute;
-			top:-40px;
-			margin-left:30px;
-		}
 		
 		.loading {
 			margin:0 auto;
@@ -451,12 +461,6 @@
 </head>
 	<body>
 		<div id=head>
-		<div id=permissions_dialogue>
-			<div class=arrow> </div>
-			<div class=msg>
-				Share your location with us! <br>We'll build you an awesome weather forecast!
-			</div>
-		</div>
 		<div id=diorama>	
 			<div id=day-night class='lg hanging-obj day'>
 				<div class=rope></div>
@@ -533,7 +537,7 @@
 			
 			<div>a weekend project by <a href='http://www.davidhampgonsalves.com'>david hamp-gonsalves</a>.</div>
 		</about>
-	</div>
+	</div></div>
 	<script type='text/javascript'>
 		<% if(request.getAttribute("city") != null) { %>
 				var cityInfo = {city: '<%= request.getAttribute("city") %>', lat: <%= request.getAttribute("lat") %>, lon:<%= request.getAttribute("lon") %>, timeOffset: <%= request.getAttribute("timezone") %>};
@@ -688,7 +692,7 @@
 		
 		function displayWeekly(forecastArea, forecastHours, position) {
 			if(isFirstUsageOfWeekly()) {
-				forecastArea.append('<div id=weekly-instructions-dialogue><div class=msg>Click on a day to see the hourly details you need!</div><div class=arrow-bottom></div></div>');
+				forecastArea.append('<div id=weekly-instructions class="dialogue down"><div class=msg>Click on a day to view the hour by hour forecast details you need!</div></div>');
 				weeklyForecastUsed();
 			}	
 			forecastArea.append('<div class=day-start>weekly forecast @ <a id=location href=\'http://maps.google.com/maps?q=' + position.lat + ',' + position.lon + '\'>' + (position.city === undefined ? '' : position.city) + ' (' + Math.round(position.lat) + '&deg;,' + Math.round(position.lon)  + '&deg;)</a><div class=controls><label>units: </label><select id=units><option value=metric>metric</option><option value=imperial>imperial</option></select> <select id=temp-units><option value=celsius>celsius</option><option value=fahrenheit>fahrenheit</option></select></div></div>');
@@ -922,11 +926,23 @@
 		}
 		
 		function setPermissionVisibility(visible) {
-			var permissionsDialog = $('#permissions_dialogue');
-			if((visible == undefined || !visible) && !locationReturned)
-				permissionsDialog.animate({'top':'0'}); 
-			else
-				permissionsDialog.animate({'top':'-150px'}); 
+			var permissionsHtml = '<div id=location-permissions class=dialogue><div class=msg>Share your location with us! <br>We\'ll build you an awesome weather forecast!</div></div>';
+			var body = $('body');
+			
+			body.append(permissionsHtml);
+			
+			var permissionsDialog = body.find('#location-permissions');
+			var animateParams;
+			var show = (visible == undefined || !visible) && !locationReturned;
+			
+			if($.browser.msie) {
+				permissionsDialog.addClass('down ie');
+				animateParams = show ? {'bottom':80} : {'bottom':'-150px'}; 
+			} else {
+				permissionsDialog.addClass('up');
+				animateParams = show ? {'top':0} : {'top':'-150px'}; 
+			}
+			permissionsDialog.animate(animateParams);
 		}
 		
 		function getSelectedDay() {
