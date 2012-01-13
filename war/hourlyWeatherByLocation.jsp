@@ -507,24 +507,24 @@
 				
 				<div id=cities>
 					<div>Hour Weather reports on over 30000 cities:</div>
-					<a href='/forecast/new_york?id=5128581'>new york</a>
-					<a href='/forecast/san_francisco?id=5391959'>san francisco</a>
-					<a href='/forecast/seattle?id=5809844'>seattle</a>
-					<a href='/forecast/los_angeles?id=5368361'>los angeles</a>
-					<a href='/forecast/philadelphia?id=4560349'>philadelphia</a>
-					<a href='/forecast/chicago?id=4887398'>chicago</a>
-					<a href='/forecast/toronto?id=6167865'>toronto</a>
-					<a href='/forecast/calgary?id=5913490'>calgary</a>
-					<a href='/forecast/montreal?id=6077243'>montreal</a>
-					<a href='/forecast/halifax?id=6324729'>halifax</a>
-					<a href='/forecast/london?id=2643743'>london</a>
-					<a href='/forecast/beijing?id=1816670'>beijing</a>
-					<a href='/forecast/moscow?id=524901'>moscow</a>
-					<a href='/forecast/mumbai?id=1275339'>mumbai</a>
-					<a href='/forecast/tokyo?id=1850147'>tokyo</a>
-					<a href='/forecast/hong_kong?id=1819729'>hong kong</a>
-					<a href='/forecast/cairo?id=360630'>cairo</a>
-					<a href='/forecast/cape_town?id=3369157'>cape town</a>
+					<a href='/forecast/new%20york%20city'>new york</a>
+					<a href='/forecast/san%20francisco?id=5391959'>san francisco</a>
+					<a href='/forecast/seattle'>seattle</a>
+					<a href='/forecast/los%20angeles?id=5368361'>los angeles</a>
+					<a href='/forecast/philadelphia'>philadelphia</a>
+					<a href='/forecast/chicago'>chicago</a>
+					<a href='/forecast/toronto'>toronto</a>
+					<a href='/forecast/calgary'>calgary</a>
+					<a href='/forecast/montreal'>montreal</a>
+					<a href='/forecast/halifax'>halifax</a>
+					<a href='/forecast/london'>london</a>
+					<a href='/forecast/beijing'>beijing</a>
+					<a href='/forecast/moscow'>moscow</a>
+					<a href='/forecast/mumbai'>mumbai</a>
+					<a href='/forecast/tokyo'>tokyo</a>
+					<a href='/forecast/hong%20kong'>hong kong</a>
+					<a href='/forecast/cairo'>cairo</a>
+					<a href='/forecast/cape%20town'>cape town</a>
 					<a href='/forecast/hyderabad?id=1269843'>hyderabad</a>
 				</div>
 			</div>
@@ -927,9 +927,7 @@
 		
 		function setPermissionVisibility(visible) {
 			var permissionsHtml = '<div id=location-permissions class=dialogue><div class=msg>Share your location with us! <br>We\'ll build you an awesome weather forecast!</div></div>';
-			var body = $('body');
-			
-			body.append(permissionsHtml);
+			var body = $('body').append(permissionsHtml);
 			
 			var permissionsDialog = body.find('#location-permissions');
 			var animateParams;
@@ -937,7 +935,7 @@
 			
 			if($.browser.msie) {
 				permissionsDialog.addClass('down ie');
-				animateParams = show ? {'bottom':80} : {'bottom':'-150px'}; 
+				animateParams = show ? {'bottom':60} : {'bottom':'-150px'}; 
 			} else {
 				permissionsDialog.addClass('up');
 				animateParams = show ? {'top':0} : {'top':'-150px'}; 
