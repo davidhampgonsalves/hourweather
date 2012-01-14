@@ -738,11 +738,13 @@
 			 $.getJSON('http://api.geonames.org/findNearbyJSON?formatted=false&lat=' + position.lat + '&lng=' + position.lon + '&fclass=P&fcode=PPLA&fcode=PPL&fcode=PPLC&username=davidhampgonsalves&style=SHORT&callback=?', 
 			 	function(data) {
 			 		if(data.geonames.length > 0) {
-			 			position.city = data.geonames[0].name;
-			 			//handle case where reverse geo comes back after forecast
-						var location = $('#location');
-		 				if(location.length > 0)
-		 					location.html(position.city + ' ' + location.html());
+			 			if(data.geonames[0].name != undefined) {
+			 				position.city = data.geonames[0].name;
+			 				//handle case where reverse geo comes back after forecast
+							var location = $('#location');
+		 					if(location.length > 0)
+			 					location.html(position.city + ' ' + location.html());
+			 			}
 			 		}
 				});
 		}
