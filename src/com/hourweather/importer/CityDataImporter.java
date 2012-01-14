@@ -15,8 +15,8 @@ import com.google.appengine.tools.remoteapi.RemoteApiOptions;
 
 public class CityDataImporter {
     public static void main(String[] args) throws IOException {
-	String username ="davidhampgonsalves@gmail.com";//= System.console().readLine("username: ");
-	String password ="conflict";//= new String(System.console().readPassword("password: "));
+	String username = System.console().readLine("username: ");
+	String password = new String(System.console().readPassword("password: "));
 	
 	//RemoteApiOptions options = new RemoteApiOptions().server("weatherhours.appspot.com", 443).credentials(username, password);
 	RemoteApiOptions options = new RemoteApiOptions().server("localhost", 8888).credentials("","");
