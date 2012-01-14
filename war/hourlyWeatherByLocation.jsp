@@ -531,7 +531,7 @@
 		</div>
 					
 		<div id=about class=content>
-			<h3>about</h3>Hour Weather uses the geo capatabilities of HTML5 to determine your rough location and then based on that is able to create a weather forecast just for you using the awesome <a href='http://www.yr.no/'>yr.no</a> weather forecasting service.
+			<h3>about</h3>Hour Weather uses the geo compatibilities of HTML5 to determine your rough location and then based on that is able to create a weather forecast just for you using the awesome <a href='http://www.yr.no/'>yr.no</a> weather forecasting service.
 			<br><br>
 			In the office, from your home or on vacation, Hour Weather will always give you a super accurate hourly weather forecast. 
 			
@@ -540,7 +540,7 @@
 	</div></div>
 	<script type='text/javascript'>
 		<% if(request.getAttribute("city") != null) { %>
-				var cityInfo = {city: '<%= request.getAttribute("city") %>', lat: <%= request.getAttribute("lat") %>, lon:<%= request.getAttribute("lon") %>, timeOffset: <%= request.getAttribute("timezone") %>};
+				var cityInfo = {city: '<%= request.getAttribute("city") %>', lat: <%= request.getAttribute("lat") %>, lon:<%= request.getAttribute("lon") %>, timezone: '<%= request.getAttribute("timezone") %>'};
 		<%}%>
 		
 		//google +1 button	
@@ -614,10 +614,10 @@
 			if(positionData.city == undefined)
 				var position = {lat: positionData.coords.latitude, lon: positionData.coords.longitude, timeOffset: - new Date().getTimezoneOffset()/60};
 			else
-				var position = {city: positionData.city, lat: positionData.lat, lon: positionData.lon, timeOffset: positionData.timeOffset};
-				
+				var position = positionData;//{city: positionData.city, lat: positionData.lat, lon: positionData.lon, timezone: positionData.timezone};
+			
 			//get forecast
-			$.getJSON("/HourlyWeatherByLocation", {lat: position.lat, long: position.lon, timezoneOffset: position.timeOffset}, function(json) {displayForecast(json, position);}).error(showError);
+			$.getJSON("/HourlyWeatherByLocation", {lat: position.lat, long: position.lon, timezoneOffset: position.timeOffset, timezone: position.timezone}, function(json) {displayForecast(json, position);}).error(showError);
 			
 			//reverse geolocate the user to display human readable location
 			if(position.city === undefined)
@@ -823,7 +823,7 @@
 			var precip = hour.precip == undefined ? hour : hour.precip;
 			if(precip == 0) return 'none';
 			
-			if(isMetric()) precip = formatDouble(precip);
+			if(isMetric()) precip = Math.round(precip);
 			else precip = formatDouble(precip * 0.03937);
 			
 			if(precip === 0) return 'trace';

@@ -18,15 +18,15 @@ public class CityDataImporter {
 	String username ="davidhampgonsalves@gmail.com";//= System.console().readLine("username: ");
 	String password ="conflict";//= new String(System.console().readPassword("password: "));
 	
-	RemoteApiOptions options = new RemoteApiOptions().server("weatherhours.appspot.com", 443).credentials(username, password);
-	//RemoteApiOptions options = new RemoteApiOptions().server("localhost", 8888).credentials("","");
+	//RemoteApiOptions options = new RemoteApiOptions().server("weatherhours.appspot.com", 443).credentials(username, password);
+	RemoteApiOptions options = new RemoteApiOptions().server("localhost", 8888).credentials("","");
 	RemoteApiInstaller installer = new RemoteApiInstaller();
 	installer.install(options);
 	
 	try {
 	    DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
 	    
-	    /*Query q = new Query("city");
+	    Query q = new Query("city");
 	    q.setKeysOnly();
 	    PreparedQuery pq = ds.prepare(q);
 	    
@@ -35,7 +35,7 @@ public class CityDataImporter {
 	    for(Entity entity : it) {
 		System.out.println("deleting " + entity.getKey());
 		ds.delete(entity.getKey());
-	    }*/
+	    }
 	    
 	    FileReader input = new FileReader("cities.txt");	    
 	    BufferedReader reader = new BufferedReader(input);

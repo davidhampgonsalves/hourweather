@@ -1,7 +1,6 @@
 package com.hourlyweather.web;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,8 +19,6 @@ import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class HourlyWeatherByCityForward extends HttpServlet {
-    private static final Logger log = Logger.getLogger(HourlyWeatherByCityForward.class.getName());
-    
     @Override
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
@@ -37,7 +34,7 @@ public class HourlyWeatherByCityForward extends HttpServlet {
 	request.setAttribute("city", city.getName());
 	request.setAttribute("lat", city.getLatitude());
 	request.setAttribute("lon", city.getLongitude());
-	request.setAttribute("timeOffset", city.getTimezone());
+	request.setAttribute("timezone", city.getTimezone().getID());
 
 	RequestDispatcher dispatcher = getServletContext()
 		.getRequestDispatcher("/");
@@ -48,7 +45,6 @@ public class HourlyWeatherByCityForward extends HttpServlet {
 	String cityName = request.getRequestURI().substring(
 		request.getRequestURI().lastIndexOf('/') + 1);
 	
-	log.warning(cityName);
 	int hashPos = cityName.lastIndexOf('#');
 	int questionPos = cityName.lastIndexOf('?');
 

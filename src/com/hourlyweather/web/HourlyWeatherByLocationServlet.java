@@ -8,22 +8,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.hourlyweather.forecast.ForecastBackFillUtil;
 import com.hourlyweather.forecast.HourlyForecast;
 import com.hourlyweather.yrno.forecast.ForecastFetcher;
 
+
 @SuppressWarnings("serial")
 public class HourlyWeatherByLocationServlet extends HttpServlet {
+    
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	    throws IOException {
 	Double lat = null, lon = null;
 	int timezoneOffset = 0;
+	String timezone = null;
 	
 	try {
 	    lat = Double.valueOf(req.getParameter("lat"));
 	    lon = Double.valueOf(req.getParameter("long"));
-	    timezoneOffset = Integer.valueOf(req.getParameter("timezoneOffset")).intValue();
+	    if(req.getParameter("timezoneOffset") != null)
+		timezoneOffset = Integer.valueOf(req.getParameter("timezoneOffset")).intValue();
+	    if(req.getParameter("timezone") != null)
+		timezone = req.getParameter("timezone");
 	}catch(Exception e)
 	{
 	    //we'll handle this in the next check of the lat and long
@@ -35,10 +42,14 @@ public class HourlyWeatherByLocationServlet extends HttpServlet {
 	    System.out.println("error with params");
 	    return;
 	}
-
+	
 	// get the forecast for a full week
-	HourlyForecast forecast = new HourlyForecast(lat,
-		lon, new DateTime(), 168, timezoneOffset);
+	HourlyForecast forecast;
+	
+	if(timezone != null)
+	    forecast = new HourlyForecast(lat, lon, new DateTime(), 168, DateTimeZone.forID(timezone));
+	else
+	    forecast = new HourlyForecast(lat, lon, new DateTime(), 168, timezoneOffset);
 	
 	// get the forecast
 	ForecastFetcher.getHourlyForecast(forecast);

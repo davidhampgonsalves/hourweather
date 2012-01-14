@@ -3,6 +3,7 @@ package com.hourlyweather.web;
 import org.joda.time.DateTimeZone;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
 
 public class City
 {
@@ -11,6 +12,10 @@ public class City
 	
 	public City(Entity city) {
 	    this.city = city;
+	}
+	
+	public String getId() {
+	    return city.getKey().getName();
 	}
 	
 	public String getName() {
@@ -26,6 +31,10 @@ public class City
 	public Double getLongitude()
 	{
 		return (Double) city.getProperty("longitude");
+	}
+	
+	public String getCountry() {
+	    return (String)city.getProperty("country");
 	}
 
 	public DateTimeZone getTimezone() {
