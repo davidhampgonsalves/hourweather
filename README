@@ -1,3 +1,0 @@
-Hour Weather is a simple web interface for the same underling code that I wrote for the android app hourly weather.
-
-It uses the HTML5 location api to determine the clients position and then generates an hour by hour forecast for that location using the YR.NO webservice. 
