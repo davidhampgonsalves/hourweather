@@ -10,17 +10,6 @@
 	    <load-on-startup>1</load-on-startup>
 	</servlet>
 	
-	<!--servlet>
-		<servlet-name>HourlyWeatherByCity</servlet-name>
-		<servlet-class>com.hourlyweather.web.HourlyWeatherByCityForward</servlet-class>
-	    <load-on-startup>1</load-on-startup>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>HourlyWeatherByCity</servlet-name>
-		<url-pattern>/forecast/*</url-pattern>
-	</servlet-mapping-->
-	
 	<servlet-mapping>
 		<servlet-name>HourlyWeatherByLocation</servlet-name>
 		<url-pattern>/HourlyWeatherByLocation</url-pattern>
