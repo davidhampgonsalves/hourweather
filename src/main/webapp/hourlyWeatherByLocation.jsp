@@ -970,7 +970,7 @@
 				Stop bookmarking local weather forecasts and let Hour Weather simplify your day.
 				
 				
-				<div id=cities>
+				<!--div id=cities>
 					<div>Hour Weather reports on over 30000 cities:</div>
 					<a href='/forecast/new%20york%20city'>new york</a>
 					<a href='/forecast/san%20francisco?id=5391959'>san francisco</a>
@@ -991,7 +991,7 @@
 					<a href='/forecast/cairo'>cairo</a>
 					<a href='/forecast/cape%20town'>cape town</a>
 					<a href='/forecast/hyderabad?id=1269843'>hyderabad</a>
-				</div>
+				</div-->
 			</div>
 		</div>
 					

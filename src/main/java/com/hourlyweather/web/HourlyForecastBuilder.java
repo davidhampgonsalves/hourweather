@@ -44,7 +44,7 @@ public class HourlyForecastBuilder {
 		    if (i == 0
 			    || forecastTime.get(DateTimeFieldType.hourOfDay()) == 0)
 			jsonHour.put("date", dayFormatter.print(forecastTime));
-
+		    
 		    jsonHour.put("sunUp", forecastHour.isSunUp());
 		    jsonHour.put("symbolCode", forecastHour.getSymbolCode());
 		    jsonHour.put("hour", hourFormatter.print(forecastTime));
